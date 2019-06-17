@@ -94,11 +94,11 @@ class MinnPost_ACM_DFP_Async_Front_End {
 		global $ad_code_manager;
 
 		switch ( $tag_id ) {
-		case 'dfp_head':
-			$ad_tags = $ad_code_manager->ad_tag_ids;
-			ob_start();
-?>
-	<!-- Include google_services.js -->
+			case 'dfp_head':
+				$ad_tags = $ad_code_manager->ad_tag_ids;
+				ob_start();
+				?>
+<!-- Include google_services.js -->
 <script type='text/javascript'>
 var googletag = googletag || {};
 googletag.cmd = googletag.cmd || [];
@@ -115,46 +115,47 @@ node.parentNode.insertBefore(gads, node);
 </script>
 <script type='text/javascript'>
 googletag.cmd.push(function() {
-<?php
-			foreach ( (array) $ad_tags as $tag ):
-				if ( $tag['tag'] == 'dfp_head' )
-					continue;
-
-				$tt = $tag['url_vars'];
-				$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag['tag'] );
-				if ( ! empty( $matching_ad_code ) ) {
-					// @todo There might be a case when there are two tags registered with the same dimensions
-					// and the same tag id ( which is just a div id ). This confuses DFP Async, so we need to make sure
-					// that tags are unique	
-
-					// Parse ad tags to output flexible unit dimensions
-					$unit_sizes = $this->parse_ad_tag_sizes( $tt );
-					$pos = '';
-					if ( isset( $matching_ad_code['url_vars']['pos'] ) ) {
-						$pos = ".setTargeting('pos', ['" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'])";
+				<?php
+				foreach ( (array) $ad_tags as $tag ) :
+					if ( 'dfp_head' === $tag['tag'] ) {
+						continue;
 					}
 
-?>
+					$tt               = $tag['url_vars'];
+					$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag['tag'] );
+					if ( ! empty( $matching_ad_code ) ) {
+						// @todo There might be a case when there are two tags registered with the same dimensions
+						// and the same tag id ( which is just a div id ). This confuses DFP Async, so we need to make sure
+						// that tags are unique
+
+						// Parse ad tags to output flexible unit dimensions
+						$unit_sizes = $this->parse_ad_tag_sizes( $tt );
+						$pos        = '';
+						if ( isset( $matching_ad_code['url_vars']['pos'] ) ) {
+							$pos = ".setTargeting('pos', ['" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'])";
+						}
+
+						?>
 googletag.defineSlot('/<?php echo esc_attr( $matching_ad_code['url_vars']['dfp_id'] ); ?>/<?php echo esc_attr( $matching_ad_code['url_vars']['tag_name'] ); ?>', <?php echo json_encode( $unit_sizes ); ?>, "acm-ad-tag-<?php echo esc_attr( $matching_ad_code['url_vars']['tag_id'] ); ?>")<?php echo $pos; ?>.addService(googletag.pubads());
-<?php
-				}
+						<?php
+					}
 			endforeach;
-?>
+				?>
 googletag.pubads().enableSingleRequest();
 googletag.pubads().collapseEmptyDivs();
 googletag.enableServices();
 });
 </script>
-<?php
+				<?php
 
-			$output_script = ob_get_clean();
-			break;
-		default:
-			$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
-			if ( ! empty( $matching_ad_code ) ) {
-				$output_html = $this->get_code_to_insert( $tag_id );
-			}
-			return $output_html;
+				$output_script = ob_get_clean();
+				break;
+			default:
+				$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
+				if ( ! empty( $matching_ad_code ) ) {
+					$output_html = $this->get_code_to_insert( $tag_id );
+				}
+				return $output_html;
 		}
 		return $output_script;
 
