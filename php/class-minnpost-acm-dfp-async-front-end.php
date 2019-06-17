@@ -614,18 +614,19 @@ googletag.enableServices();
 	 * sizes may be required to load in the same ad unit.
 	 */
 	public function parse_ad_tag_sizes( $url_vars ) {
-		if ( empty( $url_vars ) ) 
+		if ( empty( $url_vars ) ) {
 			return;
+		}
 
 		$unit_sizes_output = '';
 		if ( ! empty( $url_vars['sizes'] ) ) {
 			$unit_sizes_output = array();
-			foreach( $url_vars['sizes'] as $unit_size ) {
+			foreach ( $url_vars['sizes'] as $unit_size ) {
 				$unit_sizes_output[] = array(
 					(int) $unit_size['width'],
 					(int) $unit_size['height'],
 				);
-			}			
+			}
 		} else { // fallback for old style width x height
 			$unit_sizes_output = array(
 				(int) $url_vars['width'],
