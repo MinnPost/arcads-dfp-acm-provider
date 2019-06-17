@@ -134,7 +134,6 @@ googletag.cmd.push(function() {
 						if ( isset( $matching_ad_code['url_vars']['pos'] ) ) {
 							$pos = ".setTargeting('pos', ['" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'])";
 						}
-
 						?>
 googletag.defineSlot('/<?php echo esc_attr( $matching_ad_code['url_vars']['dfp_id'] ); ?>/<?php echo esc_attr( $matching_ad_code['url_vars']['tag_name'] ); ?>', <?php echo json_encode( $unit_sizes ); ?>, "acm-ad-tag-<?php echo esc_attr( $matching_ad_code['url_vars']['tag_id'] ); ?>")<?php echo $pos; ?>.addService(googletag.pubads());
 						<?php
@@ -412,7 +411,7 @@ googletag.enableServices();
 		$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
 
 		$output_html = '
-		<div id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '" style="width:%width%px; height:%height%px;">
+		<div id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '">
 			<script>
 				googletag.cmd.push(
 					function() {

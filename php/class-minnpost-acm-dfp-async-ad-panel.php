@@ -69,20 +69,27 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 				),
 				'enable_ui_mapping' => true,
 			),
-			array(
-				'tag'               => 'embed',
+		);
+
+		$embed_prefix      = get_option( $this->option_prefix . 'embed_prefix', 'x' );
+		$start_embed_id    = get_option( $this->option_prefix . 'start_tag_id', 'x100' );
+		$start_embed_count = intval( str_replace( $embed_prefix, '', $start_embed_id ) ); // ex 100
+		$end_embed_id      = get_option( $this->option_prefix . 'end_tag_id', 'x110' );
+		$end_embed_count   = intval( str_replace( $embed_prefix, '', $end_embed_id ) ); // ex 110
+		for ( $i = $start_embed_count; $i <= $end_embed_count; $i++ ) {
+			$ids[] = array(
+				'tag'               => $embed_prefix . $i,
 				'url_vars'          => array(
-					'sizes'           => array(
+					'sizes' => array(
 						0 => array(
 							'height' => '250',
 							'width'  => '300',
 						),
 					),
-					'pos' => '300x250_3',
 				),
 				'enable_ui_mapping' => true,
-			),
-		);
+			);
+		}
 		return $ids;
 	}
 
