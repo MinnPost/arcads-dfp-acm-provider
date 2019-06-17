@@ -35,7 +35,7 @@ class MinnPost_ACM_DFP_Async_Front_End {
 
 	private function add_actions() {
 		add_filter( 'acm_output_tokens', array( $this, 'acm_output_tokens' ), 15, 3 );
-		//add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), 11, 2 );
+		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), -1, 2 );
 		//add_filter( 'acm_display_ad_codes_without_conditionals', array( $this, 'check_conditionals' ) ); this is maybe not necessary
 		add_filter( 'acm_conditional_args', array( $this, 'conditional_args' ), 10, 2 );
 
@@ -94,52 +94,70 @@ class MinnPost_ACM_DFP_Async_Front_End {
 		global $ad_code_manager;
 
 		switch ( $tag_id ) {
-			case 'dfp_head':
-				$ad_tags = $ad_code_manager->ad_tag_ids;
-				ob_start();
-				?>
-				<!-- Include google_services.js -->
-				<script>
-					var googletag = googletag || {};
-					googletag.cmd = googletag.cmd || [];
-					(function() {
-					var gads = document.createElement('script');
-					gads.async = true;
-					var useSSL = 'https:' == document.location.protocol;
-					gads.src = (useSSL ? 'https:' : 'http:') +
-					'//www.googletagservices.com/tag/js/gpt.js';
-					var node = document.getElementsByTagName('script')[0];
-					node.parentNode.insertBefore(gads, node);
-					})();
-				</script>
-				<script>
-					googletag.cmd.push(function() {
-				<?php
-				foreach ( (array) $ad_tags as $tag ) :
-					$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag['tag'] );
-					if ( ! empty( $matching_ad_code['url_vars']['pos'] ) ) {
-						// @todo There might be a case when there are two tags registered with the same dimensions
-						// and the same tag id ( which is just a div id ). This confuses DFP Async, so we need to make sure
-						// that tags are unique
-						?>
-				googletag.defineSlot('/<?php echo esc_attr( $matching_ad_code['url_vars']['dfp_id'] ); ?>/<?php echo esc_attr( $matching_ad_code['url_vars']['tag_name'] ); ?>', <?php echo json_encode( $unit_sizes ); ?>, "acm-ad-tag-<?php echo esc_attr( $matching_ad_code['url_vars']['tag_id'] ); ?>").addService(googletag.pubads());
-						<?php
-					}
-			endforeach;
-				?>
-				googletag.pubads().enableSingleRequest();
-				googletag.pubads().collapseEmptyDivs();
-				googletag.enableServices();
-				});
-				</script>
-				<?php
+		case 'dfp_head':
+			$ad_tags = $ad_code_manager->ad_tag_ids;
+			ob_start();
+?>
+	<!-- Include google_services.js -->
+<script type='text/javascript'>
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') +
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+<script type='text/javascript'>
+googletag.cmd.push(function() {
+<?php
+			foreach ( (array) $ad_tags as $tag ):
+				if ( $tag['tag'] == 'dfp_head' )
+					continue;
 
-				$output_html = ob_get_clean();
-				break;
-			default:
-				return $output_html;
+				$tt = $tag['url_vars'];
+				$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag['tag'] );
+				if ( ! empty( $matching_ad_code ) ) {
+					// @todo There might be a case when there are two tags registered with the same dimensions
+					// and the same tag id ( which is just a div id ). This confuses DFP Async, so we need to make sure
+					// that tags are unique	
+
+					// Parse ad tags to output flexible unit dimensions
+					$unit_sizes = $this->parse_ad_tag_sizes( $tt );
+					$pos = '';
+					if ( isset( $matching_ad_code['url_vars']['pos'] ) ) {
+						$pos = ".setTargeting('pos', ['" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'])";
+					}
+
+?>
+googletag.defineSlot('/<?php echo esc_attr( $matching_ad_code['url_vars']['dfp_id'] ); ?>/<?php echo esc_attr( $matching_ad_code['url_vars']['tag_name'] ); ?>', <?php echo json_encode( $unit_sizes ); ?>, "acm-ad-tag-<?php echo esc_attr( $matching_ad_code['url_vars']['tag_id'] ); ?>")<?php echo $pos; ?>.addService(googletag.pubads());
+<?php
+				}
+			endforeach;
+?>
+googletag.pubads().enableSingleRequest();
+googletag.pubads().collapseEmptyDivs();
+googletag.enableServices();
+});
+</script>
+<?php
+
+			$output_script = ob_get_clean();
+			break;
+		default:
+			$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
+			if ( ! empty( $matching_ad_code ) ) {
+				$output_html = $this->get_code_to_insert( $tag_id );
+			}
+			return $output_html;
 		}
-		return $output_html;
+		return $output_script;
+
 	}
 
 	/**
@@ -587,6 +605,33 @@ class MinnPost_ACM_DFP_Async_Front_End {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Allow ad sizes to be defined as arrays or as basic width x height.
+	 * The purpose of this is to solve for flex units, where multiple ad
+	 * sizes may be required to load in the same ad unit.
+	 */
+	public function parse_ad_tag_sizes( $url_vars ) {
+		if ( empty( $url_vars ) ) 
+			return;
+
+		$unit_sizes_output = '';
+		if ( ! empty( $url_vars['sizes'] ) ) {
+			$unit_sizes_output = array();
+			foreach( $url_vars['sizes'] as $unit_size ) {
+				$unit_sizes_output[] = array(
+					(int) $unit_size['width'],
+					(int) $unit_size['height'],
+				);
+			}			
+		} else { // fallback for old style width x height
+			$unit_sizes_output = array(
+				(int) $url_vars['width'],
+				(int) $url_vars['height'],
+			);
+		}
+		return $unit_sizes_output;
 	}
 
 }
