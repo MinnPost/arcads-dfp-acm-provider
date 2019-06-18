@@ -38,7 +38,6 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 	* @return int $adcount
 	*
 	*/
-
 	public function ad_tag_ids( $ids ) {
 		$ids = array(
 			array(
@@ -69,6 +68,13 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 				),
 				'enable_ui_mapping' => true,
 			),
+			array(
+				'tag'               => 'Middle3',
+				'url_vars'          => array(
+					'size' => 'fluid',
+				),
+				'enable_ui_mapping' => true,
+			),
 		);
 
 		$embed_prefix      = get_option( $this->option_prefix . 'embed_prefix', 'x' );
@@ -86,6 +92,7 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 							'width'  => '300',
 						),
 					),
+					'pos'   => $embed_prefix . $i,
 				),
 				'enable_ui_mapping' => true,
 			);
