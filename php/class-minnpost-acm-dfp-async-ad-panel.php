@@ -38,7 +38,6 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 	* @return int $adcount
 	*
 	*/
-
 	public function ad_tag_ids( $ids ) {
 		$ids = array(
 			array(
@@ -66,6 +65,13 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 							'width'  => '300',
 						),
 					),
+				),
+				'enable_ui_mapping' => true,
+			),
+			array(
+				'tag'               => 'Middle3',
+				'url_vars'          => array(
+					'size' => 'fluid',
 				),
 				'enable_ui_mapping' => true,
 			),
