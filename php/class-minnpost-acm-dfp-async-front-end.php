@@ -93,28 +93,18 @@ class MinnPost_ACM_DFP_Async_Front_End {
 	 * return filtered html for the ad code
 	 */
 	public function filter_output_html( $output_html, $tag_id ) {
-		global $ad_code_manager;
-
 		switch ( $tag_id ) {
 			case 'dfp_head':
-				$ad_tags = $ad_code_manager->ad_tag_ids;
-
-				$output_script = "
-				<script>
-				const arcAds = new ArcAds({
-					dfp: {
-					}
-				});
-				</script>
-				";
+				$output_html = '';
 				break;
 			default:
+				global $ad_code_manager;
 				$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
 				if ( ! empty( $matching_ad_code ) ) {
-					$output_script = $this->get_code_to_insert( $tag_id );
+					$output_html = $this->get_code_to_insert( $tag_id );
 				}
 		}
-		return $output_script;
+		return $output_html;
 
 	}
 
@@ -468,8 +458,6 @@ class MinnPost_ACM_DFP_Async_Front_End {
 				}
 			}
 
-			error_log( 'lazy load is ' . $lazy_load );
-
 			// if the filter is enabled, add a prerender method for lazy loading
 			if ( true === $lazy_load ) {
 				$arcads_prerender = ',prerender: window.addLazyLoad';
@@ -485,6 +473,15 @@ class MinnPost_ACM_DFP_Async_Front_End {
 	*/
 	public function add_scripts() {
 		wp_enqueue_script( 'arcads', plugins_url( 'assets/arcads.js', dirname( __FILE__ ) ), array(), $this->version, false );
+		wp_add_inline_script(
+			'arcads',
+			"
+			const arcAds = new ArcAds({
+				dfp: {
+				}
+			});
+			"
+		);
 		if ( true === $this->lazy_load_all || true === $this->lazy_load_embeds ) {
 			// allow individual posts to disable lazyload. this can be useful in the case of unresolvable javascript conflicts.
 			if ( is_singular() ) {
@@ -496,30 +493,20 @@ class MinnPost_ACM_DFP_Async_Front_End {
 			wp_add_inline_script(
 				'arcads',
 				"
-				window.addLazyLoad = function(ad) {
-					return new Promise(function(resolve, reject) {
-						// The 'ad' arguement will provide information about the unit
-						//console.log(ad)
+				window.addLazyLoad = function( ad ) {
+					return new Promise( function( resolve, reject ) {
+						// The 'ad' argument will provide information about the unit
 						var this_ad_id = ad.adId;
 						// If you do not resolve the promise the advertisement will not display
-						//var statusBox = document.getElementById( this_ad_id );
-						//var statusText = document.getElementById( this_ad_id );
-
 						function handler( entries, observer ) {
 						  for ( entry of entries ) {
-
-						    //statusText.textContent = entry.isIntersecting;
-
 						    if ( entry.isIntersecting ) {
 						      resolve();
 						    }
 						  }
 						}
-
 						let observer = new IntersectionObserver( handler );
 						observer.observe( document.getElementById( this_ad_id ) );
-
-						//resolve();
 					});
 				}
 				"
