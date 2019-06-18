@@ -478,6 +478,7 @@ class MinnPost_ACM_DFP_Async_Front_End {
 			"
 			const arcAds = new ArcAds({
 				dfp: {
+					id: '1035012'
 				}
 			});
 			"
@@ -497,6 +498,9 @@ class MinnPost_ACM_DFP_Async_Front_End {
 					return new Promise( function( resolve, reject ) {
 						// The 'ad' argument will provide information about the unit
 						var this_ad_id = ad.adId;
+						var options    = {
+						  rootMargin: '300px 0px'
+						}
 						// If you do not resolve the promise the advertisement will not display
 						function handler( entries, observer ) {
 						  for ( entry of entries ) {
@@ -505,7 +509,7 @@ class MinnPost_ACM_DFP_Async_Front_End {
 						    }
 						  }
 						}
-						let observer = new IntersectionObserver( handler );
+						let observer = new IntersectionObserver( handler, options );
 						observer.observe( document.getElementById( this_ad_id ) );
 					});
 				}
