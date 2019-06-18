@@ -105,32 +105,6 @@ class MinnPost_ACM_DFP_Async_Front_End {
 					dfp: {
 					}
 				});
-				window.addLazyLoad = function(ad) {
-					return new Promise(function(resolve, reject) {
-						// The 'ad' arguement will provide information about the unit
-						//console.log(ad)
-						var this_ad_id = ad.adId;
-						// If you do not resolve the promise the advertisement will not display
-						//var statusBox = document.getElementById( this_ad_id );
-						//var statusText = document.getElementById( this_ad_id );
-
-						function handler( entries, observer ) {
-						  for ( entry of entries ) {
-
-						    //statusText.textContent = entry.isIntersecting;
-
-						    if ( entry.isIntersecting ) {
-						      resolve();
-						    }
-						  }
-						}
-
-						let observer = new IntersectionObserver( handler );
-						observer.observe( document.getElementById( this_ad_id ) );
-
-						//resolve();
-					});
-				}
 				</script>
 				";
 				break;
@@ -520,17 +494,32 @@ class MinnPost_ACM_DFP_Async_Front_End {
 				}
 			}
 			wp_add_inline_script(
-				'lozad',
+				'arcads',
 				"
-				if (typeof lozad != 'undefined') {
-					window.addEventListener('load', function() {
-						var observer = lozad('.lozad', {
-							rootMargin: '300px 0px',
-						    load: function(el) {
-						        postscribe(el, '<script src=' + el.getAttribute('data-src') + '><\/script>');
+				window.addLazyLoad = function(ad) {
+					return new Promise(function(resolve, reject) {
+						// The 'ad' arguement will provide information about the unit
+						//console.log(ad)
+						var this_ad_id = ad.adId;
+						// If you do not resolve the promise the advertisement will not display
+						//var statusBox = document.getElementById( this_ad_id );
+						//var statusText = document.getElementById( this_ad_id );
+
+						function handler( entries, observer ) {
+						  for ( entry of entries ) {
+
+						    //statusText.textContent = entry.isIntersecting;
+
+						    if ( entry.isIntersecting ) {
+						      resolve();
 						    }
-						});
-						observer.observe();
+						  }
+						}
+
+						let observer = new IntersectionObserver( handler );
+						observer.observe( document.getElementById( this_ad_id ) );
+
+						//resolve();
 					});
 				}
 				"
