@@ -66,20 +66,11 @@ class MinnPost_ACM_DFP_Async_Front_End {
 
 		//error_log( 'tile is ' . $dfp_tile . ' and ord is ' . $dfp_ord . ' and pos is ' . $dfp_pos . ' and dcopt is ' . $dfp_dcopt . ' and wp query is ' . print_r( $wp_query, true ) );
 
-		//error_log( 'tag id is ' . $tag_id . ' and code to display is ' . print_r( $code_to_display, true ) );
-
 		//if ( false === $dfp_pos[ $code_to_display['url_vars']['sz'] ] ) {
 		if ( isset( $code_to_display['url_vars']['pos'] ) ) {
 			$output_tokens['%pos%'] = $code_to_display['url_vars']['pos'];
 		}
-		//} else {
-			//$output_tokens['%pos%'] = 'bottom';
-		//}
 		//$output_tokens['%test%'] = isset( $_GET['test'] ) && $_GET['test'] == 'on' ? 'on' : '';
-
-		if ( isset( $output_tokens['%pos%'] ) ) {
-			//error_log( 'output tokens is ' . print_r( $output_tokens, true ) );
-		}
 
 		return $output_tokens;
 	}
