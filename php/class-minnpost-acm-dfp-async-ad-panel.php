@@ -86,6 +86,7 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 							'width'  => '300',
 						),
 					),
+					'pos'   => $embed_prefix . $i,
 				),
 				'enable_ui_mapping' => true,
 			);
