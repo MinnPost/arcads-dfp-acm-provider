@@ -35,7 +35,7 @@ class MinnPost_ACM_DFP_Async_Front_End {
 
 	private function add_actions() {
 		add_filter( 'acm_output_tokens', array( $this, 'acm_output_tokens' ), 15, 3 );
-		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), -1, 2 );
+		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), 100, 2 );
 		//add_filter( 'acm_display_ad_codes_without_conditionals', array( $this, 'check_conditionals' ) ); this is maybe not necessary
 		add_filter( 'acm_conditional_args', array( $this, 'conditional_args' ), 10, 2 );
 
@@ -49,10 +49,9 @@ class MinnPost_ACM_DFP_Async_Front_End {
 		add_shortcode( 'cms_ad', array( $this, 'render_shortcode' ) );
 		add_filter( 'the_content', array( $this, 'insert_and_render_inline_ads' ), 2000 );
 		add_filter( 'the_content_feed', array( $this, 'insert_and_render_inline_ads' ), 2000 );
-		//add_action( 'wp_head', array( $this, 'action_wp_head' ) );
 
 		// add javascript
-		//add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 20 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 20 );
 	}
 
 	public function acm_output_tokens( $output_tokens, $tag_id, $code_to_display ) {
@@ -96,26 +95,14 @@ class MinnPost_ACM_DFP_Async_Front_End {
 		switch ( $tag_id ) {
 			case 'dfp_head':
 				$ad_tags = $ad_code_manager->ad_tag_ids;
-				ob_start();
-				?>
-<!-- Include google_services.js -->
-<script type='text/javascript'>
-var googletag = googletag || {};
-googletag.cmd = googletag.cmd || [];
-(function() {
-var gads = document.createElement('script');
-gads.async = true;
-gads.type = 'text/javascript';
-var useSSL = 'https:' == document.location.protocol;
-gads.src = (useSSL ? 'https:' : 'http:') +
-'//www.googletagservices.com/tag/js/gpt.js';
-var node = document.getElementsByTagName('script')[0];
-node.parentNode.insertBefore(gads, node);
-})();
-</script>
-<script type='text/javascript'>
-googletag.cmd.push(function() {
-				<?php
+
+				$output_script = "
+				<script>
+				const arcAds = new ArcAds({
+					dfp: {
+					}
+				});
+				";
 				foreach ( (array) $ad_tags as $tag ) :
 					if ( 'dfp_head' === $tag['tag'] ) {
 						continue;
@@ -132,29 +119,31 @@ googletag.cmd.push(function() {
 						$unit_sizes = $this->parse_ad_tag_sizes( $tt );
 						$pos        = '';
 						if ( isset( $matching_ad_code['url_vars']['pos'] ) ) {
-							$pos = ".setTargeting('pos', ['" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'])";
+							//$pos = ".setTargeting('pos', ['" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'])";
+							//$pos = ",targeting: [pos: '" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "']";
+							$pos = ",
+							targeting: {
+								pos: '" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'
+							}";
 						}
-						?>
-googletag.defineSlot('/<?php echo esc_attr( $matching_ad_code['url_vars']['dfp_id'] ); ?>/<?php echo esc_attr( $matching_ad_code['url_vars']['tag_name'] ); ?>', <?php echo json_encode( $unit_sizes ); ?>, "acm-ad-tag-<?php echo esc_attr( $matching_ad_code['url_vars']['tag_id'] ); ?>")<?php echo $pos; ?>.addService(googletag.pubads());
-						<?php
-					}
-			endforeach;
-				?>
-googletag.pubads().enableSingleRequest();
-googletag.pubads().collapseEmptyDivs();
-googletag.enableServices();
-});
-</script>
-				<?php
 
-				$output_script = ob_get_clean();
+						$output_script .= "
+						arcAds.registerAd({
+							id: 'acm-ad-tag-" . esc_attr( $matching_ad_code['url_vars']['tag_id'] ) . "',
+							slotName: '" . esc_attr( $matching_ad_code['url_vars']['tag_name'] ) . "',
+							dimensions: " . json_encode( $unit_sizes ) . $pos . ',
+						});
+						';
+
+					}
+				endforeach;
+				$output_script .= '</script>';
 				break;
 			default:
 				$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
 				if ( ! empty( $matching_ad_code ) ) {
-					$output_html = $this->get_code_to_insert( $tag_id );
+					$output_script = $this->get_code_to_insert( $tag_id );
 				}
-				return $output_html;
 		}
 		return $output_script;
 
@@ -409,17 +398,35 @@ googletag.enableServices();
 		$ad_code_manager  = $this->ad_code_manager;
 		$ad_tags          = $ad_code_manager->ad_tag_ids;
 		$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
+		$tt               = $matching_ad_code['url_vars'];
+		if ( ! empty( $matching_ad_code ) ) {
+			// @todo There might be a case when there are two tags registered with the same dimensions
+			// and the same tag id ( which is just a div id ). This confuses DFP Async, so we need to make sure
+			// that tags are unique
 
-		$output_html = '
-		<div id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '">
+			// Parse ad tags to output flexible unit dimensions
+			$unit_sizes = $this->parse_ad_tag_sizes( $tt );
+			$pos        = '';
+			if ( isset( $matching_ad_code['url_vars']['pos'] ) ) {
+				$pos = ",
+				targeting: {
+					pos: '" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'
+				}";
+			}
+
+			$output_script = "
 			<script>
-				googletag.cmd.push(
-					function() {
-						googletag.display("' . $matching_ad_code['url_vars']['tag_id'] . '");
-					}
-				);
+				arcAds.registerAd({
+					id: 'acm-ad-tag-" . esc_attr( $matching_ad_code['url_vars']['tag_id'] ) . "',
+					slotName: '" . esc_attr( $matching_ad_code['url_vars']['tag_name'] ) . "',
+					dimensions: " . json_encode( $unit_sizes ) . $pos . ',
+				});
 			</script>
-		</div>';
+			';
+
+		}
+
+		$output_html = '<div id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
 
 		// use the function we already have for the placeholder ad
 		if ( function_exists( 'acm_no_ad_users' ) ) {
@@ -429,7 +436,7 @@ googletag.enableServices();
 			$output_html = acm_no_ad_users( $output_html, $tag_id );
 		}
 
-		return $output_html;
+		return $output_script . $output_html;
 	}
 
 	/**
@@ -437,6 +444,7 @@ googletag.enableServices();
 	*
 	*/
 	public function add_scripts() {
+		wp_enqueue_script( 'arcads', plugins_url( 'assets/arcads.js', dirname( __FILE__ ) ), array(), $this->version, false );
 		if ( true === $this->lazy_load_all || true === $this->lazy_load_embeds ) {
 			// allow individual posts to disable lazyload. this can be useful in the case of unresolvable javascript conflicts.
 			if ( is_singular() ) {
