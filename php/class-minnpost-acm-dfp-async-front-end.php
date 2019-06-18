@@ -29,6 +29,9 @@ class MinnPost_ACM_DFP_Async_Front_End {
 			true  => "\n",
 		);
 
+		$this->lazy_load_all    = filter_var( get_option( $this->option_prefix . 'lazy_load_ads', false ), FILTER_VALIDATE_BOOLEAN );
+		$this->lazy_load_embeds = filter_var( get_option( $this->option_prefix . 'lazy_load_embeds', false ), FILTER_VALIDATE_BOOLEAN );
+
 		$this->add_actions();
 
 	}
@@ -102,9 +105,34 @@ class MinnPost_ACM_DFP_Async_Front_End {
 					dfp: {
 					}
 				});
+				window.addLazyLoad = function(ad) {
+					return new Promise(function(resolve, reject) {
+						// The 'ad' arguement will provide information about the unit
+						//console.log(ad)
+						var this_ad_id = ad.adId;
+						// If you do not resolve the promise the advertisement will not display
+						//var statusBox = document.getElementById( this_ad_id );
+						//var statusText = document.getElementById( this_ad_id );
+
+						function handler( entries, observer ) {
+						  for ( entry of entries ) {
+
+						    //statusText.textContent = entry.isIntersecting;
+
+						    if ( entry.isIntersecting ) {
+						      resolve();
+						    }
+						  }
 						}
 
+						let observer = new IntersectionObserver( handler );
+						observer.observe( document.getElementById( this_ad_id ) );
 
+						//resolve();
+					});
+				}
+				</script>
+				";
 				break;
 			default:
 				$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
@@ -381,12 +409,14 @@ class MinnPost_ACM_DFP_Async_Front_End {
 				}";
 			}
 
+			$arcads_prerender = $this->lazy_loaded_or_not( $matching_ad_code['url_vars']['tag_id'] );
+
 			$output_script = "
 			<script>
 				arcAds.registerAd({
 					id: 'acm-ad-tag-" . esc_attr( $matching_ad_code['url_vars']['tag_id'] ) . "',
 					slotName: '" . esc_attr( $matching_ad_code['url_vars']['tag_name'] ) . "',
-					dimensions: " . json_encode( $unit_sizes ) . $pos . ',
+					dimensions: " . json_encode( $unit_sizes ) . $pos . $arcads_prerender . ',
 				});
 			</script>
 			';
@@ -403,7 +433,76 @@ class MinnPost_ACM_DFP_Async_Front_End {
 			$output_html = acm_no_ad_users( $output_html, $tag_id );
 		}
 
-		return $output_script . $output_html;
+		return $output_html . $output_script;
+	}
+
+	/**
+	 * Return a prerender JavaScript method if this ad should be lazy loaded
+	 *
+	 * @param string $output_html   The non lazy loaded html
+	 * @param string $tag_id        The ad tag id
+	 *
+	 * @return $arcads_prerender    The prerender method for arcads
+	 *
+	 */
+	private function lazy_loaded_or_not( $tag_id ) {
+		// are we lazy loading or not
+		$lazy_load        = false;
+		$arcads_prerender = '';
+
+		if ( is_feed() ) {
+			return false;
+		}
+
+		if ( true === $this->lazy_load_all ) {
+			$lazy_load = true;
+		} elseif ( true === $this->lazy_load_embeds ) {
+			$lazy_load = false; // we only want to lazy load the embeds, so set it to true when necessary
+			// lazy load embeds only
+			$multiple_embeds = get_option( $this->option_prefix . 'multiple_embeds', '0' );
+			if ( is_array( $multiple_embeds ) ) {
+				$multiple_embeds = $multiple_embeds[0];
+			}
+
+			// if multiples are enabled, check to see if the id is in the embed tag range
+			if ( '1' === $multiple_embeds ) {
+				$embed_prefix        = get_option( $this->option_prefix . 'embed_prefix', 'x' );
+				$start_embed_id      = get_option( $this->option_prefix . 'start_tag_id', 'x100' );
+				$start_embed_count   = intval( str_replace( $embed_prefix, '', $start_embed_id ) ); // ex 100
+				$end_embed_id        = get_option( $this->option_prefix . 'end_tag_id', 'x110' );
+				$end_embed_count     = intval( str_replace( $embed_prefix, '', $end_embed_id ) ); // ex 110
+				$current_embed_count = intval( str_replace( $embed_prefix, '', $tag_id ) ); // ex 108
+				if ( ( $current_embed_count >= $start_embed_count && $current_embed_count <= $end_embed_count ) ) {
+					$lazy_load = true;
+				}
+			}
+			// if there is an auto embed ad, we should auto load it also.
+			$auto_embed = get_option( $this->option_prefix . 'auto_embed_position', 'Middle' );
+			if ( $auto_embed === $tag_id ) {
+				$lazy_load = true;
+			}
+
+			if ( ! is_singular() ) {
+				$lazy_load = false;
+			} // if we're only supposed to lazy load embeds, don't do it unless this is a singular post
+
+			// allow individual posts to disable lazyload. this can be useful in the case of unresolvable javascript conflicts.
+			if ( is_singular() ) {
+				global $post;
+				if ( get_post_meta( $post->ID, 'wp_lozad_lazyload_prevent_lozad_lazyload', true ) ) {
+					$lazy_load = false;
+				}
+			}
+
+			error_log( 'lazy load is ' . $lazy_load );
+
+			// if the filter is enabled, add a prerender method for lazy loading
+			if ( true === $lazy_load ) {
+				$arcads_prerender = ',prerender: window.addLazyLoad';
+			}
+		}
+
+		return $arcads_prerender;
 	}
 
 	/**
