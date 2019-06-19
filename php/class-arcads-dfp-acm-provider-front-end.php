@@ -1,11 +1,13 @@
 <?php
 /**
- * Class file for the MinnPost_ACM_DFP_Async_Front_End class.
+ * Class file for the ArcAds_DFP_ACM_Provider_Front_End class.
  *
  * @file
  */
-
-class MinnPost_ACM_DFP_Async_Front_End {
+/**
+ * Create front end functionality to render the ads
+ */
+class ArcAds_DFP_ACM_Provider_Front_End {
 
 	public $option_prefix;
 	public $version;
@@ -14,15 +16,17 @@ class MinnPost_ACM_DFP_Async_Front_End {
 	public $ad_code_manager;
 
 	/**
-	* Constructor which sets up ad panel
+	* Constructor which sets up front end rendering
 	*/
 	public function __construct() {
 
-		$this->option_prefix   = minnpost_acm_dfp_async()->option_prefix;
-		$this->version         = minnpost_acm_dfp_async()->version;
-		$this->slug            = minnpost_acm_dfp_async()->slug;
-		$this->capability      = minnpost_acm_dfp_async()->capability;
-		$this->ad_code_manager = minnpost_acm_dfp_async()->ad_code_manager;
+		$this->option_prefix = arcads_dfp_acm_provider()->option_prefix;
+		$this->version       = arcads_dfp_acm_provider()->version;
+		$this->slug          = arcads_dfp_acm_provider()->slug;
+		$this->capability    = arcads_dfp_acm_provider()->capability;
+
+		global $ad_code_manager;
+		$this->ad_code_manager = $ad_code_manager;
 
 		$this->paragraph_end = array(
 			false => '</p>',
@@ -32,14 +36,16 @@ class MinnPost_ACM_DFP_Async_Front_End {
 		$this->lazy_load_all    = filter_var( get_option( $this->option_prefix . 'lazy_load_ads', false ), FILTER_VALIDATE_BOOLEAN );
 		$this->lazy_load_embeds = filter_var( get_option( $this->option_prefix . 'lazy_load_embeds', false ), FILTER_VALIDATE_BOOLEAN );
 
+		$this->dfp_id = filter_var( get_option( $this->option_prefix . 'dfp_id', '1035012' ), FILTER_SANITIZE_STRING );
+
 		$this->add_actions();
 
 	}
 
 	private function add_actions() {
 		add_filter( 'acm_output_tokens', array( $this, 'acm_output_tokens' ), 15, 3 );
-		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), 100, 2 );
-		//add_filter( 'acm_display_ad_codes_without_conditionals', array( $this, 'check_conditionals' ) ); this is maybe not necessary
+		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), 10, 2 );
+		add_filter( 'acm_display_ad_codes_without_conditionals', array( $this, 'check_conditionals' ) );
 		add_filter( 'acm_conditional_args', array( $this, 'conditional_args' ), 10, 2 );
 
 		// disperse shortcodes in the editor if the settings say to
@@ -55,6 +61,15 @@ class MinnPost_ACM_DFP_Async_Front_End {
 
 		// add javascript
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 20 );
+
+		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
+	}
+
+	/**
+	 * Add the initialization code in the head
+	 */
+	public function action_wp_head() {
+		do_action( 'acm_tag', 'dfp_head' );
 	}
 
 	public function acm_output_tokens( $output_tokens, $tag_id, $code_to_display ) {
@@ -89,8 +104,7 @@ class MinnPost_ACM_DFP_Async_Front_End {
 				$output_html = '';
 				break;
 			default:
-				global $ad_code_manager;
-				$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
+				$matching_ad_code = $this->ad_code_manager->get_matching_ad_code( $tag_id );
 				if ( ! empty( $matching_ad_code ) ) {
 					$output_html = $this->get_code_to_insert( $tag_id );
 				}
@@ -463,13 +477,13 @@ class MinnPost_ACM_DFP_Async_Front_End {
 	*
 	*/
 	public function add_scripts() {
-		wp_enqueue_script( 'arcads', plugins_url( 'assets/arcads.js', dirname( __FILE__ ) ), array(), $this->version, false );
+		wp_enqueue_script( 'arcads', plugins_url( 'assets/js/arcads.js', dirname( __FILE__ ) ), array(), $this->version, false );
 		wp_add_inline_script(
 			'arcads',
 			"
 			const arcAds = new ArcAds({
 				dfp: {
-					id: '1035012'
+					id: '" . $this->dfp_id . "'
 				}
 			});
 			"

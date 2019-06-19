@@ -12,7 +12,7 @@ spl_autoload_register(
 	function ( $class_name ) {
 
 		// Only autoload classes from this plugin
-		if ( 'MinnPost_ACM_DFP_Async' !== $class_name && 0 !== strpos( $class_name, 'MinnPost_ACM_DFP_Async' ) ) {
+		if ( 'ArcAds_DFP_ACM_Provider' !== $class_name && 0 !== strpos( $class_name, 'ArcAds_DFP_ACM_Provider' ) ) {
 			return;
 		}
 
@@ -20,7 +20,7 @@ spl_autoload_register(
 		$file_name = 'class-' . str_replace( '_', '-', strtolower( $class_name ) );
 
 		// create file path
-		$file = dirname( MINNPOST_ACM_DFP_ASYNC_FILE ) . '/php/' . $file_name . '.php';
+		$file = dirname( ARCADS_DFP_ACM_PROVIDER_FILE ) . '/php/' . $file_name . '.php';
 
 		// If a file is found, load it
 		if ( file_exists( $file ) ) {

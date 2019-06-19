@@ -1,11 +1,14 @@
 <?php
 /**
- * Class file for the MinnPost_ACM_DFP_Async_Ad_Panel class.
+ * Class file for the Appnexus_ACM_Provider_Ad_Panel class.
  *
  * @file
  */
 
-class MinnPost_ACM_DFP_Async_Ad_Panel {
+/**
+ * Create the ACM ad panel
+ */
+class ArcAds_DFP_ACM_Provider_Ad_Panel {
 
 	public $option_prefix;
 	public $version;
@@ -18,10 +21,13 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 	*/
 	public function __construct() {
 
-		$this->option_prefix   = minnpost_acm_dfp_async()->option_prefix;
-		$this->version         = minnpost_acm_dfp_async()->version;
-		$this->slug            = minnpost_acm_dfp_async()->slug;
-		$this->ad_code_manager = minnpost_acm_dfp_async()->ad_code_manager;
+		$this->option_prefix = arcads_dfp_acm_provider()->option_prefix;
+		$this->version       = arcads_dfp_acm_provider()->version;
+		$this->slug          = arcads_dfp_acm_provider()->slug;
+		$this->capability    = arcads_dfp_acm_provider()->capability;
+
+		global $ad_code_manager;
+		$this->ad_code_manager = $ad_code_manager;
 
 		$this->add_actions();
 
@@ -29,6 +35,7 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 
 	private function add_actions() {
 		add_filter( 'acm_ad_tag_ids', array( $this, 'ad_tag_ids' ) );
+		add_filter( 'acm_ad_code_args', array( $this, 'filter_ad_code_args' ) );
 	}
 
 	/**
@@ -38,7 +45,7 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 	* @return int $adcount
 	*
 	*/
-	public function ad_tag_ids( $ids ) {
+	public function ad_tag_ids( $ids = array() ) {
 		$ids = array(
 			array(
 				'tag'               => 'leaderboard',
@@ -75,6 +82,10 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 				),
 				'enable_ui_mapping' => true,
 			),
+			array(
+				'tag'      => 'dfp_head',
+				'url_vars' => array(),
+			),
 		);
 
 		$embed_prefix      = get_option( $this->option_prefix . 'embed_prefix', 'x' );
@@ -101,6 +112,50 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 	}
 
 	/**
+	 * Register the tags available for mapping in the UI
+	 */
+	public function filter_ad_code_args( $ad_code_args ) {
+		$ad_code_manager = $this->ad_code_manager;
+
+		foreach ( $ad_code_args as $tag => $ad_code_arg ) {
+
+			if ( 'tag' !== $ad_code_arg['key'] ) {
+				continue;
+			}
+
+			// Get all of the tags that are registered, and provide them as options
+			foreach ( (array) $ad_code_manager->ad_tag_ids as $ad_tag ) {
+				if ( isset( $ad_tag['enable_ui_mapping'] ) && $ad_tag['enable_ui_mapping'] ) {
+					$ad_code_args[ $tag ]['options'][ $ad_tag['tag'] ] = $ad_tag['tag'];
+				}
+			}
+		}
+		return $ad_code_args;
+	}
+
+	/**
+	 * Register the tag ids based on the admin settings
+	 */
+	/*public function ad_tag_ids() {
+		$tag_list = explode( ', ', get_option( $this->option_prefix . 'tag_list', '' ) );
+
+		$ad_tag_ids = array();
+		foreach ( $tag_list as $tag ) {
+			$ad_tag_ids[] = array(
+				'tag'               => $tag,
+				'url_vars'          => array(
+					'tag' => $tag,
+				),
+				'enable_ui_mapping' => true,
+			);
+		}
+
+		$tag_type = get_option( $this->option_prefix . 'ad_tag_type', '' );
+
+		return $ad_tag_ids;
+	}*/
+
+	/**
 	 * Register the tag arguments
 	 */
 	public function ad_code_args() {
@@ -122,6 +177,12 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 				'required' => true,
 			),
 			array(
+				'key'      => 'dfp_id',
+				'label'    => __( 'DFP ID', 'ad-code-manager' ),
+				'editable' => true,
+				'required' => true,
+			),
+			array(
 				'key'      => 'tag_name',
 				'label'    => __( 'Tag Name', 'ad-code-manager' ),
 				'editable' => true,
@@ -130,6 +191,5 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 		);
 		return $ad_code_args;
 	}
-
 
 }

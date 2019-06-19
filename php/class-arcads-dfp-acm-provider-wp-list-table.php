@@ -1,6 +1,14 @@
 <?php
+/**
+ * Class file for the ArcAds_DFP_ACM_Provider_WP_List_Table class.
+ *
+ * @file
+ */
 
-class MinnPost_ACM_DFP_Async_Ad_Panel_Table extends ACM_WP_List_Table {
+/**
+ * Create WP List Table instance
+ */
+class ArcAds_DFP_ACM_Provider_WP_List_Table extends ACM_WP_List_Table {
 	/**
 	 * Register table settings
 	 *
@@ -8,13 +16,11 @@ class MinnPost_ACM_DFP_Async_Ad_Panel_Table extends ACM_WP_List_Table {
 	 * @return null
 	 */
 	public function __construct() {
-		parent::__construct(
-			array(
-				'singular' => 'arcads_acm_wp_list_table', //Singular label
-				'plural'   => 'arcads_acm_wp_list_table', //plural label, also this well be one of the table css class
-				'ajax'     => true,
-			)
-		);
+		parent::__construct( array(
+			'singular' => 'arcads_dfp_acm_wp_list_table', //Singular label
+			'plural'   => 'arcads_dfp_acm_wp_list_table', //plural label, also this well be one of the table css class
+			'ajax'     => true,
+		) );
 	}
 
 	/**
@@ -123,13 +129,11 @@ class MinnPost_ACM_DFP_Async_Ad_Panel_Table extends ACM_WP_List_Table {
 		}
 
 		/* -- Register the pagination -- */
-		$this->set_pagination_args(
-			array(
-				'total_items' => $totalitems,
-				'total_pages' => $totalpages,
-				'per_page'    => $perpage,
-			)
-		);
+		$this->set_pagination_args( array(
+			'total_items' => $totalitems,
+			'total_pages' => $totalpages,
+			'per_page'    => $perpage,
+		) );
 		//The pagination links are automatically built according to those parameters
 
 		/* -- Register the Columns -- */
