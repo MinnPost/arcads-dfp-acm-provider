@@ -4,7 +4,7 @@ Plugin Name: ArcAds DFP ACM Provider
 Plugin URI:
 Description:
 Version: 0.0.1
-Author: Jonathan Stegall
+Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
