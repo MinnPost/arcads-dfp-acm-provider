@@ -29,11 +29,12 @@ class ArcAds_DFP_ACM_Provider_Extension extends ACM_Provider {
 
 		$this->ad_panel  = new ArcAds_DFP_ACM_Provider_Ad_Panel();
 		$this->front_end = new ArcAds_DFP_ACM_Provider_Front_End();
+		$this->admin     = new ArcAds_DFP_ACM_Provider_Admin();
 
-		// tags for AppNexus
+		// tags for DFP
 		$this->ad_tag_ids = $this->ad_panel->ad_tag_ids();
 
-		// Default fields for AppNexus
+		// Default fields for DFP
 		$this->ad_code_args = $this->ad_panel->ad_code_args();
 
 		parent::__construct();

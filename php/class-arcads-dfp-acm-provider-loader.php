@@ -95,7 +95,7 @@ class ArcAds_DFP_ACM_Provider_Loader {
 	* These are the links that go with this plugin's entry
 	*/
 	public function plugin_action_links( $links, $file ) {
-		if ( plugin_basename( __FILE__ ) === $file ) {
+		if ( plugin_basename( $this->file ) === $file ) {
 			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=' . $this->slug . '">' . __( 'Settings', 'arcads-dfp-acm-provider' ) . '</a>';
 			array_unshift( $links, $settings );
 		}
