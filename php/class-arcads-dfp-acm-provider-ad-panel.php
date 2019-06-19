@@ -1,17 +1,15 @@
 <?php
 /**
- * Class file for the Appnexus_ACM_Provider_Ad_Panel class.
+ * The plugin class that creates the ad panel
  *
- * @file
+ * @package ArcAds_DFP_ACM_Provider
  */
 
-/**
- * Create the ACM ad panel
- */
 class ArcAds_DFP_ACM_Provider_Ad_Panel {
 
-	public $option_prefix;
 	public $version;
+	public $file;
+	public $option_prefix;
 	public $slug;
 	public $capability;
 	public $ad_code_manager;
@@ -21,8 +19,9 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 	*/
 	public function __construct() {
 
-		$this->option_prefix = arcads_dfp_acm_provider()->option_prefix;
 		$this->version       = arcads_dfp_acm_provider()->version;
+		$this->file          = arcads_dfp_acm_provider()->file;
+		$this->option_prefix = arcads_dfp_acm_provider()->option_prefix;
 		$this->slug          = arcads_dfp_acm_provider()->slug;
 		$this->capability    = arcads_dfp_acm_provider()->capability;
 

@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the ArcAds_DFP_ACM_Provider_Front_End class.
+ * The plugin class that creates front end functionality to render the ads
  *
- * @file
+ * @package ArcAds_DFP_ACM_Provider
  */
-/**
- * Create front end functionality to render the ads
- */
+
 class ArcAds_DFP_ACM_Provider_Front_End {
 
-	public $option_prefix;
 	public $version;
+	public $file;
+	public $option_prefix;
 	public $slug;
 	public $capability;
 	public $ad_code_manager;
@@ -20,8 +19,9 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	*/
 	public function __construct() {
 
-		$this->option_prefix = arcads_dfp_acm_provider()->option_prefix;
 		$this->version       = arcads_dfp_acm_provider()->version;
+		$this->file          = arcads_dfp_acm_provider()->file;
+		$this->option_prefix = arcads_dfp_acm_provider()->option_prefix;
 		$this->slug          = arcads_dfp_acm_provider()->slug;
 		$this->capability    = arcads_dfp_acm_provider()->capability;
 
@@ -477,7 +477,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	*
 	*/
 	public function add_scripts() {
-		wp_enqueue_script( 'arcads', plugins_url( 'assets/js/arcads.js', dirname( __FILE__ ) ), array(), $this->version, false );
+		wp_enqueue_script( 'arcads', plugins_url( 'assets/js/arcads.min.js', dirname( __FILE__ ) ), array(), filemtime( plugin_dir_path( $this->file ) . '/assets/js/arcads.min.js' ), false );
 		wp_add_inline_script(
 			'arcads',
 			"
