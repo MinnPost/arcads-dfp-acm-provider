@@ -100,4 +100,36 @@ class MinnPost_ACM_DFP_Async_Ad_Panel {
 		return $ids;
 	}
 
+	/**
+	 * Register the tag arguments
+	 */
+	public function ad_code_args() {
+		$ad_code_args = array(
+			array(
+				'key'      => 'tag',
+				'label'    => __( 'Tag', 'ad-code-manager' ),
+				'editable' => true,
+				'required' => true,
+				'type'     => 'select',
+				'options'  => array(
+					// This is added later, through 'acm_ad_code_args' filter
+				),
+			),
+			array(
+				'key'      => 'tag_id',
+				'label'    => __( 'Tag ID', 'ad-code-manager' ),
+				'editable' => true,
+				'required' => true,
+			),
+			array(
+				'key'      => 'tag_name',
+				'label'    => __( 'Tag Name', 'ad-code-manager' ),
+				'editable' => true,
+				'required' => true,
+			),
+		);
+		return $ad_code_args;
+	}
+
+
 }

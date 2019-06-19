@@ -55,4 +55,17 @@ function minnpost_acm_dfp_async() {
 	return $plugin;
 }
 
-minnpost_acm_dfp_async()->init();
+//minnpost_acm_dfp_async()->init();
+
+// add this plugin to the ACM provider list and initialize it
+if ( ! function_exists( 'acm_register_arcads_slug' ) ) :
+	add_filter( 'acm_register_provider_slug', 'acm_register_arcads_slug' );
+	function acm_register_arcads_slug( $providers ) {
+		$providers->arcads = array(
+			'provider' => 'MinnPost_ACM_DFP_Async',
+			'table'    => 'MinnPost_ACM_DFP_Async_Ad_Panel_Table',
+		);
+		return $providers;
+	}
+endif;
+

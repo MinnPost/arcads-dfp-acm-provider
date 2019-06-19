@@ -5,7 +5,7 @@
  * @package MinnPost_ACM_DFP_Async
  */
 
-class MinnPost_ACM_DFP_Async {
+class MinnPost_ACM_DFP_Async extends ACM_Provider {
 
 	/**
 	 * The version number for this release of the plugin.
@@ -50,6 +50,12 @@ class MinnPost_ACM_DFP_Async {
 
 	/**
 	* @var object
+	* Ad panel table
+	*/
+	public $ad_panel_table;
+
+	/**
+	* @var object
 	* Front end display
 	*/
 	public $front_end;
@@ -66,16 +72,17 @@ class MinnPost_ACM_DFP_Async {
 	 * @param string $version The current plugin version
 	 * @param string $file The main plugin file
 	 */
-	public function __construct( $version, $file ) {
+	public function __construct() {
 
-		$this->version       = $version;
-		$this->file          = $file;
+		//$this->version       = $version;
+		//$this->file          = $file;
 		$this->option_prefix = 'minnpost_acm_dfp_async_';
 		$this->option_prefix = 'appnexus_acm_provider_';
 		$this->slug          = 'minnpost-acm-dfp-async';
 		$this->capability    = 'manage_advertising';
-		// parent plugin
-		$this->ad_code_manager = $this->load_parent();
+
+		global $ad_code_manager;
+		$this->ad_code_manager = $ad_code_manager;
 
 	}
 
@@ -84,25 +91,20 @@ class MinnPost_ACM_DFP_Async {
 		// Ad panel setup
 		$this->ad_panel = new MinnPost_ACM_DFP_Async_Ad_Panel();
 
+		// tags for AppNexus
+		//$this->ad_tag_ids = $this->ad_panel->ad_tag_ids();
+
+		// Default fields for AppNexus
+		$this->ad_code_args = $this->ad_panel->ad_code_args();
+
 		// Front end display
 		$this->front_end = new MinnPost_ACM_DFP_Async_Front_End();
 
 		// Admin features
 		//$this->admin = new MinnPost_ACM_DFP_Async_Admin();
 
-	}
+		parent::__construct();
 
-	/**
-	* Load and set values we don't need until the parent plugin is actually loaded
-	*
-	*/
-	public function load_parent() {
-		if ( ! class_exists( 'Ad_Code_Manager' ) ) {
-			return false;
-		} else {
-			global $ad_code_manager;
-			return $ad_code_manager;
-		}
 	}
 
 	/**
@@ -141,3 +143,15 @@ class MinnPost_ACM_DFP_Async {
 	}
 
 }
+
+// add this plugin to the ACM provider list and initialize it
+if ( ! function_exists( 'acm_register_arcads_slug' ) ) :
+	add_filter( 'acm_register_provider_slug', 'acm_register_arcads_slug' );
+	function acm_register_arcads_slug( $providers ) {
+		$providers->arcads = array(
+			'provider' => 'MinnPost_ACM_DFP_Async',
+			'table'    => 'MinnPost_ACM_DFP_Async_Ad_Panel_Table',
+		);
+		return $providers;
+	}
+endif;
