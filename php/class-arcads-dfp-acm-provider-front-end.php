@@ -370,12 +370,63 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 			// Parse ad tags to output flexible unit dimensions
 			$unit_sizes = $this->parse_ad_tag_sizes( $tt );
-			$pos        = '';
+			$position   = '';
 			if ( isset( $matching_ad_code['url_vars']['pos'] ) ) {
-				$pos = ",
-				targeting: {
-					pos: '" . esc_attr( $matching_ad_code['url_vars']['pos'] ) . "'
-				}";
+				$position = esc_attr( $matching_ad_code['url_vars']['pos'] );
+			}
+
+			$id       = '';
+			$url_type = '';
+
+			if ( is_single() ) {
+				$id       = get_the_ID();
+				$url_type = 'post';
+			} elseif ( is_page() ) {
+				$id       = get_the_ID();
+				$url_type = 'page';
+			} elseif ( is_front_page() ) {
+				$url_type = 'front-page';
+			} elseif ( is_home() ) {
+				$url_type = 'home';
+			} elseif ( is_category() ) {
+				$id       = get_query_var( 'cat' );
+				$url_type = 'category';
+			} elseif ( is_tag() ) {
+				$id       = get_query_var( 'tag' );
+				$url_type = 'tag';
+			} elseif ( is_author() ) {
+				$author   = get_queried_object();
+				$id       = $author->ID;
+				$url_type = 'author';
+			}
+
+			// allow developers to set/override the targeting ID or url type or position manually
+			$id       = apply_filters( $this->option_prefix . 'set_targeting_id', $id );
+			$url_type = apply_filters( $this->option_prefix . 'set_targeting_url_type', $url_type );
+			$position = apply_filters( $this->option_prefix . 'set_targeting_position', $position );
+
+			$targeting = '';
+
+			if ( '' !== $position || '' !== $id || '' !== $url_type ) {
+				$targeting = array();
+
+				if ( '' !== $position ) {
+					$targeting['pos'] = $position;
+				}
+
+				if ( '' !== $id ) {
+					$targeting['id'] = esc_attr( $id );
+				}
+
+				if ( '' !== $url_type ) {
+					$targeting['url_type'] = esc_attr( $url_type );
+				}
+
+				$targeting = json_encode( $targeting, JSON_FORCE_OBJECT );
+			}
+
+			if ( '' !== $targeting ) {
+				$targeting = ',targeting: ' . $targeting;
 			}
 
 			$arcads_prerender = $this->lazy_loaded_or_not( $matching_ad_code['url_vars']['tag_id'] );
@@ -385,7 +436,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 				arcAds.registerAd({
 					id: 'acm-ad-tag-" . esc_attr( $matching_ad_code['url_vars']['tag_id'] ) . "',
 					slotName: '" . esc_attr( $matching_ad_code['url_vars']['tag_name'] ) . "',
-					dimensions: " . json_encode( $unit_sizes ) . $pos . $arcads_prerender . ',
+					dimensions: " . json_encode( $unit_sizes ) . $targeting . $arcads_prerender . ',
 				});
 			</script>
 			';

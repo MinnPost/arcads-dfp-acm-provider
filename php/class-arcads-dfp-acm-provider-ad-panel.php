@@ -111,6 +111,33 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 	}
 
 	/**
+	 * Register the tag ids based on the admin settings
+	 * @param array $ids
+	 * @return array $ad_tag_ids
+	 */
+	/*public function ad_tag_ids( $ids = array() ) {
+		$tag_list = explode( ', ', get_option( $this->option_prefix . 'tag_list', '' ) );
+
+		$ad_tag_ids = array();
+		foreach ( $tag_list as $tag ) {
+			$ad_tag_ids[] = array(
+				'tag'               => $tag,
+				'url_vars'          => array(
+					'tag' => $tag,
+				),
+				'enable_ui_mapping' => true,
+			);
+		}
+
+		$ad_tag_ids[] = array(
+			'tag'      => 'dfp_head',
+			'url_vars' => array(),
+		);
+
+		return $ad_tag_ids;
+	}*/
+
+	/**
 	 * Register the tags available for mapping in the UI
 	 */
 	public function filter_ad_code_args( $ad_code_args ) {
@@ -133,28 +160,6 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 	}
 
 	/**
-	 * Register the tag ids based on the admin settings
-	 */
-	/*public function ad_tag_ids() {
-		$tag_list = explode( ', ', get_option( $this->option_prefix . 'tag_list', '' ) );
-
-		$ad_tag_ids = array();
-		foreach ( $tag_list as $tag ) {
-			$ad_tag_ids[] = array(
-				'tag'               => $tag,
-				'url_vars'          => array(
-					'tag' => $tag,
-				),
-				'enable_ui_mapping' => true,
-			);
-		}
-
-		$tag_type = get_option( $this->option_prefix . 'ad_tag_type', '' );
-
-		return $ad_tag_ids;
-	}*/
-
-	/**
 	 * Register the tag arguments
 	 */
 	public function ad_code_args() {
@@ -172,12 +177,6 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 			array(
 				'key'      => 'tag_id',
 				'label'    => __( 'Tag ID', 'ad-code-manager' ),
-				'editable' => true,
-				'required' => true,
-			),
-			array(
-				'key'      => 'dfp_id',
-				'label'    => __( 'DFP ID', 'ad-code-manager' ),
 				'editable' => true,
 				'required' => true,
 			),

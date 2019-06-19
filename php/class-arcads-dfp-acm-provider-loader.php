@@ -50,7 +50,6 @@ class ArcAds_DFP_ACM_Provider_Loader {
 		$this->version       = $version;
 		$this->file          = $file;
 		$this->option_prefix = 'arcads_dfp_acm_provider_';
-		$this->option_prefix = 'appnexus_acm_provider_';
 		$this->slug          = 'arcads-dfp-acm-provider';
 		$this->capability    = 'manage_advertising';
 
