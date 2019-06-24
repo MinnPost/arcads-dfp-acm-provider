@@ -733,25 +733,37 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			if ( ! is_array( $url_vars['sizes'] ) ) {
 				$url_vars['sizes'] = explode( ',', $url_vars['sizes'] );
 				foreach ( $url_vars['sizes'] as $key => $value ) {
-					$current_size              = explode( 'x', $value );
-					$url_vars['sizes'][ $key ] = array(
-						'width'  => $current_size[0],
-						'height' => $current_size[1],
-					);
+					if ( 'fluid' !== $value ) {
+						$current_size              = explode( 'x', $value );
+						$url_vars['sizes'][ $key ] = array(
+							'width'  => $current_size[0],
+							'height' => $current_size[1],
+						);
+					} else {
+						$url_vars['sizes'][ $key ] = $value;
+					}
 				}
 			}
 			$unit_sizes_output = array();
 			foreach ( $url_vars['sizes'] as $unit_size ) {
-				$unit_sizes_output[] = array(
-					(int) $unit_size['width'],
-					(int) $unit_size['height'],
-				);
+				if ( is_array( $unit_size ) ) {
+					$unit_sizes_output[] = array(
+						(int) $unit_size['width'],
+						(int) $unit_size['height'],
+					);
+				} else {
+					$unit_sizes_output[] = $unit_size;
+				}
 			}
 		} else { // fallback for old style width x height
-			$unit_sizes_output = array(
-				(int) $url_vars['width'],
-				(int) $url_vars['height'],
-			);
+			if ( isset( $url_vars['width'] ) && isset( $url_vars['height'] ) ) {
+				$unit_sizes_output = array(
+					(int) $url_vars['width'],
+					(int) $url_vars['height'],
+				);
+			} else {
+				$unit_sizes_output = 'fluid';
+			}
 		}
 		return $unit_sizes_output;
 	}

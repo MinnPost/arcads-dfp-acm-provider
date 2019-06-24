@@ -44,7 +44,7 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 	* @return int $adcount
 	*
 	*/
-	public function ad_tag_ids( $ids = array() ) {
+	/*public function ad_tag_ids( $ids = array() ) {
 		$ids = array(
 			array(
 				'tag'               => 'leaderboard',
@@ -120,14 +120,14 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 			);
 		}
 		return $ids;
-	}
+	}*/
 
 	/**
 	 * Register the tag ids based on the admin settings
 	 * @param array $ids
 	 * @return array $ad_tag_ids
 	 */
-	/*public function ad_tag_ids( $ids = array() ) {
+	public function ad_tag_ids( $ids = array() ) {
 		$tag_list = explode( ', ', get_option( $this->option_prefix . 'tag_list', '' ) );
 
 		$ad_tag_ids = array();
@@ -147,7 +147,7 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 		);
 
 		return $ad_tag_ids;
-	}*/
+	}
 
 	/**
 	 * Register the tags available for mapping in the UI
