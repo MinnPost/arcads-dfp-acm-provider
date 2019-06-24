@@ -14,12 +14,13 @@ function showEmbedOptions(field, multiple) {
 	}
 }
 
-// as the drupal plugin does, we only allow one field to be a prematch or key
+// handle the checkbox that switches between single/multiple ads
 $(document).on('click', 'input[name="arcads_dfp_acm_provider_multiple_embeds[]"]', function() {
 	var multiple = $(this).val();
 	showEmbedOptions($(this), multiple);
 });
 
+// on load, check for single vs multiple embeds
 $(document).ready(function() {
 	var fieldname = 'input[name="arcads_dfp_acm_provider_multiple_embeds[]"]';
 	if ( $(fieldname).length) {
