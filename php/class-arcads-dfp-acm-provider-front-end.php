@@ -726,9 +726,20 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		if ( empty( $url_vars ) ) {
 			return;
 		}
-
 		$unit_sizes_output = '';
 		if ( ! empty( $url_vars['sizes'] ) ) {
+			// if size is not an array, we assume it is a text field with comma separated sizes. ex 728x90 is one size.
+			// this means we run explode twice.
+			if ( ! is_array( $url_vars['sizes'] ) ) {
+				$url_vars['sizes'] = explode( ',', $url_vars['sizes'] );
+				foreach ( $url_vars['sizes'] as $key => $value ) {
+					$current_size              = explode( 'x', $value );
+					$url_vars['sizes'][ $key ] = array(
+						'width'  => $current_size[0],
+						'height' => $current_size[1],
+					);
+				}
+			}
 			$unit_sizes_output = array();
 			foreach ( $url_vars['sizes'] as $unit_size ) {
 				$unit_sizes_output[] = array(
