@@ -131,7 +131,15 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 		$tag_list = explode( ', ', get_option( $this->option_prefix . 'tag_list', '' ) );
 
 		$ad_tag_ids = array();
-		foreach ( $tag_list as $tag ) {
+
+		// add the pos attribute to embed ads
+		$embed_prefix      = get_option( $this->option_prefix . 'embed_prefix', 'x' );
+		$start_embed_id    = get_option( $this->option_prefix . 'start_tag_id', 'x100' );
+		$start_embed_count = intval( str_replace( $embed_prefix, '', $start_embed_id ) ); // ex 100
+		$end_embed_id      = get_option( $this->option_prefix . 'end_tag_id', 'x110' );
+		$end_embed_count   = intval( str_replace( $embed_prefix, '', $end_embed_id ) ); // ex 110
+
+		foreach ( $tag_list as $key => $tag ) {
 			$ad_tag_ids[] = array(
 				'tag'               => $tag,
 				'url_vars'          => array(
@@ -139,6 +147,10 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 				),
 				'enable_ui_mapping' => true,
 			);
+			$tag_count    = intval( str_replace( $embed_prefix, '', $tag ) );
+			if ( $tag_count <= $end_embed_count && $tag_count >= $start_embed_count ) {
+				$ad_tag_ids[ $key ]['url_vars']['pos'] = $tag;
+			}
 		}
 
 		$ad_tag_ids[] = array(
