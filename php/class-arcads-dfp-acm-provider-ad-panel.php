@@ -198,6 +198,12 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 				'editable' => true,
 				'required' => true,
 			),
+			array(
+				'key'      => 'sizes',
+				'label'    => __( 'Sizes (format: width/height. Separate multiple sizes by commas)', 'ad-code-manager' ),
+				'editable' => true,
+				'required' => true,
+			),
 		);
 		return $ad_code_args;
 	}

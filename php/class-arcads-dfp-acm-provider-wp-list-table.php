@@ -34,6 +34,7 @@ class ArcAds_DFP_ACM_Provider_WP_List_Table extends ACM_WP_List_Table {
 			'priority'     => __( 'Priority', 'ad-code-manager' ),
 			'operator'     => __( 'Logical Operator', 'ad-code-manager' ),
 			'conditionals' => __( 'Conditionals', 'ad-code-manager' ),
+			'sizes'        => __( 'Sizes', 'ad-code-manager' ),
 		);
 	}
 
@@ -50,12 +51,13 @@ class ArcAds_DFP_ACM_Provider_WP_List_Table extends ACM_WP_List_Table {
 	 */
 	function get_sortable_columns() {
 		$sortable_columns = array(
-			'tag'          => array( 'tag', false ),
-			'tag_id'       => array( 'tag_id', false ),
+			'tag'          => array( 'tag', true ),
+			'tag_id'       => array( 'tag_id', true ),
 			'tag_name'     => array( 'tag_name', false ),
 			'priority'     => array( 'priority', false ),
 			'operator'     => array( 'operator', false ),
 			'conditionals' => array( 'conditionals', false ),
+			'sizes'        => array( 'sizes', false ),
 		);
 		return $sortable_columns;
 	}
@@ -161,6 +163,22 @@ class ArcAds_DFP_ACM_Provider_WP_List_Table extends ACM_WP_List_Table {
 		$output  = isset( $item['tag'] ) ? esc_html( $item['tag'] ) : esc_html( $item['url_vars']['tag'] );
 		$output .= $this->row_actions_output( $item );
 		return $output;
+	}
+
+	/**
+	 * Output the size values in the list table
+	 */
+	function column_sizes( $item ) {
+		if ( empty( $item['url_vars']['sizes'] ) ) {
+			return '<em>' . __( 'None', 'ad-code-manager' ) . '</em>';
+		}
+
+		$sizes_html = '';
+		$sizes      = explode( ',', $item['url_vars']['sizes'] );
+		foreach ( $sizes as $size ) {
+			$sizes_html .= $size . '<br />';
+		}
+		return $sizes_html;
 	}
 
 }
