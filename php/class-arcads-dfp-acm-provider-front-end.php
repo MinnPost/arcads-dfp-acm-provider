@@ -51,7 +51,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		// disperse shortcodes in the editor if the settings say to
 		$show_in_editor = filter_var( get_option( $this->option_prefix . 'show_in_editor', false ), FILTER_VALIDATE_BOOLEAN );
 		if ( true === $show_in_editor ) {
-			//add_filter( 'content_edit_pre', array( $this, 'insert_inline_ad_in_editor' ), 10, 2 );
+			add_filter( 'content_edit_pre', array( $this, 'insert_inline_ad_in_editor' ), 10, 2 );
 		}
 
 		// always either replace the shortcodes with ads, or if they are absent disperse ad codes throughout the content
