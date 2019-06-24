@@ -82,6 +82,18 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 				'enable_ui_mapping' => true,
 			),
 			array(
+				'tag'               => 'x01',
+				'url_vars'          => array(
+					'sizes' => array(
+						0 => array(
+							'height' => '100',
+							'width'  => '300',
+						),
+					),
+				),
+				'enable_ui_mapping' => true,
+			),
+			array(
 				'tag'      => 'dfp_head',
 				'url_vars' => array(),
 			),
