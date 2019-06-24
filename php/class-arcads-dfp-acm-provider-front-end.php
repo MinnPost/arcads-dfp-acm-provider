@@ -718,9 +718,16 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	}
 
 	/**
-	 * Allow ad sizes to be defined as arrays or as basic width x height.
-	 * The purpose of this is to solve for flex units, where multiple ad
-	 * sizes may be required to load in the same ad unit.
+	 * Allow ad sizes to be defined as: arrays, basic width x height, or fluid. This allows for multiple ad sizes for the same unit, as well as allowing for DFP's native fluid ads.
+	 *
+	 * @param string $content
+	 * @param string $post_type
+	 * @param int $post_id
+	 * @param bool $in_editor
+	 *
+	 * @return bool
+	 * return true to skip rendering ads, false otherwise
+	 *
 	 */
 	public function parse_ad_tag_sizes( $url_vars ) {
 		if ( empty( $url_vars ) ) {
