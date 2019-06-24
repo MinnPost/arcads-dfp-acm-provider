@@ -229,7 +229,7 @@ class ArcAds_DFP_ACM_Provider_Admin {
 		add_settings_section( $page, $title, null, $page );
 
 		$settings = array(
-			'dfp_id'                => array(
+			'dfp_id'                        => array(
 				'title'    => __( 'DFP ID', 'arcads-dfp-acm-provider' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
@@ -239,34 +239,6 @@ class ArcAds_DFP_ACM_Provider_Admin {
 					'desc' => __( 'Enter the DFP Id from Google.', 'arcads-dfp-acm-provider' ),
 				),
 			),
-			/*'ad_tag_type'                   => array(
-				'title'    => __( 'Ad tag type', 'appnexus-acm-provider' ),
-				'callback' => $callbacks['select'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'  => 'select',
-					'desc'  => '',
-					'items' => array(
-						'jx'  => array(
-							'text'  => 'JX',
-							'value' => 'jx',
-						),
-						'mjx' => array(
-							'text'  => 'MJX',
-							'value' => 'mjx',
-						),
-						'nx'  => array(
-							'text'  => 'NX',
-							'value' => 'nx',
-						),
-						'sx'  => array(
-							'text'  => 'SX',
-							'value' => 'sx',
-						),
-					),
-				),
-			),*/
 			'tag_list'                      => array(
 				'title'    => __( 'List tags', 'arcads-dfp-acm-provider' ),
 				'callback' => $callbacks['textarea'],
@@ -406,7 +378,7 @@ class ArcAds_DFP_ACM_Provider_Admin {
 						'args'     => array(
 							'type'    => 'text',
 							'desc'    => __( 'Add a wp_postmeta field name used to prevent all ads.', 'arcads-dfp-acm-provider' ),
-							'default' => '_post_prevent_appnexus_ads',
+							'default' => '_post_prevent_arcads_ads',
 						),
 					),
 					'prevent_ads_field_value'           => array(
@@ -428,7 +400,7 @@ class ArcAds_DFP_ACM_Provider_Admin {
 						'args'     => array(
 							'type'    => 'text',
 							'desc'    => __( 'Add a wp_postmeta field name used to prevent automatic ads.', 'arcads-dfp-acm-provider' ),
-							'default' => '_post_prevent_automatic_appnexus_ads',
+							'default' => '_post_prevent_automatic_arcads_ads',
 						),
 					),
 					'prevent_automatic_ads_field_value' => array(
