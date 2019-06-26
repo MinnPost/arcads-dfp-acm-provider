@@ -17,17 +17,17 @@
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "autoprefixer": "^9.5.1",
-    "browser-sync": "^2.26.5",
+    "autoprefixer": "^9.6.0",
+    "browser-sync": "^2.26.7",
     "css-mqpacker": "^7.0.0",
     "cssnano": "^4.1.10",
     "eslint-config-wordpress": "^2.0.0",
-    "fs": "0.0.1-security",
+    "fs": "0.0.2",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^5.0.0",
-    "gulp-imagemin": "^5.0.3",
+    "gulp-imagemin": "^6.0.0",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
@@ -38,8 +38,14 @@
     "gulp-stylelint": "^9.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-wp-pot": "^2.3.5",
-    "npm-check-updates": "^3.1.9",
-    "stylelint": "^10.0.1",
+    "npm-check-updates": "^3.1.12",
+    "stylelint": "^10.1.0",
     "stylelint-config-wordpress": "^14.0.0"
-  }
+  },
+  "browserslist": [
+    "last 2 version",
+    "> 1%",
+    "maintained node versions",
+    "not dead"
+  ]
 }

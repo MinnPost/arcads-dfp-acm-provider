@@ -13,7 +13,175 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: php/class-arcads-dfp-acm-provider-loader.php:99
+#: php/class-arcads-dfp-acm-provider-admin.php:53, php/class-arcads-dfp-acm-provider-admin.php:53
+msgid "ArcAds DFP Ad Settings"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:233
+msgid "DFP ID"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:239
+msgid "Enter the DFP Id from Google."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:243
+msgid "List tags"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:248
+msgid "Enter comma separated list of tags."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:252
+msgid "Show ads without conditionals"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:258
+msgid "If an ad has no conditionals, show it everywhere."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:265
+msgid "Lazy load all ads?"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:271
+msgid "Load each ad when the user scrolls near it, regardless of its placement. You can also choose to lazy load only embed ads."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:277
+msgid "Use IntersectionObserver Polyfill?"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:283
+msgid "If checked, the plugin will include the polyfill for the native IntersectionObserver API in unsupporting browsers. Always check https://caniuse.com/#feat=intersectionobserver before disabling the polyfill."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:338
+msgid "Show shortcode in editor?"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:344
+msgid "If checked, the [cms_ad] shortcode(s) will show in the post editor, so it/they can be moved around the post as needed."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:349
+msgid "Post types to embed ads"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:355
+msgid "By default this will list all post types in your installation."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:360
+msgid "Multiple embeds per story?"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:386
+msgid "Meta field to prevent ads"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:392
+msgid "Add a wp_postmeta field name used to prevent all ads."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:397
+msgid "Meta field value to prevent ads"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:403
+msgid "Add a wp_postmeta field value used to prevent all ads."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:408
+msgid "Meta field to prevent automatic ads"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:414
+msgid "Add a wp_postmeta field name used to prevent automatic ads."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:419
+msgid "Meta field value to prevent automatic ads"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:425
+msgid "Add a wp_postmeta field value used to prevent automatic ads."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:432
+msgid "Lazy load embed ads?"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:438
+msgid "If checked, the ad inserter will lazy load embed ads, even if it is not set to lazy load all the other ads."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:445
+msgid "Auto embed position"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:451
+msgid "Position for the in-story ad, if it is not otherwise included."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:455
+msgid "Auto embed top character offset"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:461
+msgid "How many characters from the top of the story to put the ad."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:465
+msgid "Auto embed bottom character offset"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:471
+msgid "How many characters from the bottom of the story to put the ad."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:478
+msgid "Embed tag prefix"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:484
+msgid "Embed tags start with this character."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:488
+msgid "First embed tag ID"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:494
+msgid "Pick the tag ID that starts the embed tags. The ad inserter will start here, and continue to the maximum number of embeds."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:499
+msgid "Number of paragraphs between each insertion"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:506
+msgid "The ad inserter will wait this number of paragraphs after the start of the article, insert the first ad zone, count this many more paragraphs, insert the second ad zone, and so on."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:510
+msgid "Last embed tag ID"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:521
+msgid "Minimum paragraph count"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:528
+msgid "This setting allows you to prevent ads from appearing on posts with fewer paragraphs than the threshold."
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-admin.php:654, php/class-arcads-dfp-acm-provider-admin.php:695, php/class-arcads-dfp-acm-provider-admin.php:853
+msgid "Defined in wp-config.php"
+msgstr ""
+
+#: php/class-arcads-dfp-acm-provider-loader.php:98
 msgid "Settings"
 msgstr ""
 
