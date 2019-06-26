@@ -513,11 +513,10 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 					$lazy_load = false;
 				}
 			}
-
-			// if the filter is enabled, add a prerender method for lazy loading
-			if ( true === $lazy_load ) {
-				$arcads_prerender = ',prerender: window.addLazyLoad';
-			}
+		}
+		// if lazy load is true for this ad, add a prerender method to the script for lazy loading
+		if ( true === $lazy_load ) {
+			$arcads_prerender = ',prerender: window.addLazyLoad';
 		}
 
 		return $arcads_prerender;
