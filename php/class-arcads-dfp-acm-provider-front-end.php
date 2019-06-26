@@ -443,7 +443,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		}
 
-		$output_html = '<div id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
+		$output_html = '<div class="acm-ad ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
 
 		// use the function we already have for the placeholder ad
 		if ( function_exists( 'acm_no_ad_users' ) ) {
