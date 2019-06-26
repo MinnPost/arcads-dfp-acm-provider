@@ -528,7 +528,15 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	*
 	*/
 	public function add_scripts() {
-		wp_enqueue_script( 'arcads', plugins_url( 'assets/js/arcads.min.js', dirname( __FILE__ ) ), array(), filemtime( plugin_dir_path( $this->file ) . '/assets/js/arcads.min.js' ), false );
+
+		$arcads_dependencies = array();
+
+		// put the polyfill for intersectionobserver here
+		if ( true === filter_var( get_option( $this->option_prefix . 'use_intersectionobserver_polyfill', false ), FILTER_VALIDATE_BOOLEAN ) ) {
+			wp_enqueue_script( 'intersectionobserverpolyfill', plugins_url( 'assets/js/intersection-observer.min.js', dirname( __FILE__ ) ), array(), filemtime( plugin_dir_path( $this->file ) . '/assets/js/intersection-observer.min.js' ), true );
+			$arcads_dependencies[] = 'intersectionobserverpolyfill';
+		}
+		wp_enqueue_script( 'arcads', plugins_url( 'assets/js/arcads.min.js', dirname( __FILE__ ) ), $arcads_dependencies, filemtime( plugin_dir_path( $this->file ) . '/assets/js/arcads.min.js' ), false );
 		wp_add_inline_script(
 			'arcads',
 			"

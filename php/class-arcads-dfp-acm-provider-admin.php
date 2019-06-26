@@ -273,6 +273,18 @@ class ArcAds_DFP_ACM_Provider_Admin {
 			),
 		);
 
+		$settings['use_intersectionobserver_polyfill'] = array(
+			'title'    => __( 'Use IntersectionObserver Polyfill?', 'arcads-dfp-acm-provider' ),
+			'callback' => $callbacks['text'],
+			'page'     => $page,
+			'section'  => $section,
+			'args'     => array(
+				'type'    => 'checkbox',
+				'desc'    => __( 'If checked, the plugin will include the polyfill for the native IntersectionObserver API in unsupporting browsers. Always check https://caniuse.com/#feat=intersectionobserver before disabling the polyfill.', 'arcads-dfp-acm-provider' ),
+				'default' => '0',
+			),
+		);
+
 		foreach ( $settings as $key => $attributes ) {
 			$id       = $this->option_prefix . $key;
 			$name     = $this->option_prefix . $key;
