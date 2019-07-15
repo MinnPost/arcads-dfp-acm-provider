@@ -684,7 +684,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// If this post has the option set to not add automatic ads, do not add them to the editor view. If we're not in the editor, ignore this value because they would be manually added at this point.
 		// This field name is stored in the plugin options.
-		$field_automatic_name  = get_option( $this->option_prefix . 'prevent_automatic_ads_field', '_post_prevent_appnexus_ads' );
+		$field_automatic_name  = get_option( $this->option_prefix . 'prevent_automatic_ads_field', '_post_prevent_arcads_ads' );
 		$field_automatic_value = get_option( $this->option_prefix . 'prevent_automatic_ads_field_value', 'on' );
 		if ( true === $in_editor && get_post_meta( $post_id, $field_automatic_name, true ) === $field_automatic_value ) {
 			return true;
@@ -703,7 +703,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// Stop if this post has the option set to not add any ads.
 		// This field name is stored in the plugin options.
-		$field_name  = get_option( $this->option_prefix . 'prevent_ads_field', '_post_prevent_appnexus_ads' );
+		$field_name  = get_option( $this->option_prefix . 'prevent_ads_field', '_post_prevent_arcads_ads' );
 		$field_value = get_option( $this->option_prefix . 'prevent_ads_field_value', 'on' );
 		if ( get_post_meta( $post_id, $field_name, true ) === $field_value ) {
 			return true;
