@@ -183,7 +183,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// Should we skip rendering ads?
 		$should_we_skip = $this->should_we_skip_ads( $content, $post_type, $post_id, $in_editor );
-		$should_we_skip = false;
 		if ( true === $should_we_skip ) {
 			return $content;
 		}
