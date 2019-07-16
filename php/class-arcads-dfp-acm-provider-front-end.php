@@ -509,7 +509,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			// allow individual posts to disable lazyload. this can be useful in the case of unresolvable javascript conflicts.
 			if ( is_singular() ) {
 				global $post;
-				if ( get_post_meta( $post->ID, 'wp_lozad_lazyload_prevent_lozad_lazyload', true ) ) {
+				if ( get_post_meta( $post->ID, 'arcads_dfp_acm_provider_post_prevent_lazyload', true ) ) {
 					$lazy_load = false;
 				}
 			}
