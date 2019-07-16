@@ -357,6 +357,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 *
 	 */
 	public function get_code_to_insert( $tag_id, $class = '' ) {
+		$output_script = ''; // this could be empty
 		// get the code to insert
 		$ad_code_manager  = $this->ad_code_manager;
 		$ad_tags          = $ad_code_manager->ad_tag_ids;
