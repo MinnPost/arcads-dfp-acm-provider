@@ -56,7 +56,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// always either replace the shortcodes with ads, or if they are absent disperse ad codes throughout the content
 		add_shortcode( 'cms_ad', array( $this, 'render_shortcode' ) );
-		add_filter( 'the_content', array( $this, 'insert_and_render_inline_ads' ), 2000 );
+		add_filter( 'the_content', array( $this, 'insert_and_render_inline_ads' ), -1 ); // 2000 fails here, but i can't tell if it's because of raw html or something else. -1 fails on standard stories?
 		add_filter( 'the_content_feed', array( $this, 'insert_and_render_inline_ads' ), 2000 );
 
 		// add javascript
@@ -717,7 +717,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		}
 
 		// If we don't have any paragraphs, let's skip the ads for this post
-		if ( ! stripos( $content, $this->paragraph_end[ $in_editor ] ) ) {
+		if ( ! stripos( wpautop( $content ), $this->paragraph_end[ $in_editor ] ) ) {
 			return true;
 		}
 
