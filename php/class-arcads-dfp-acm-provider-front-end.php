@@ -352,7 +352,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * @param string $tag_id
 	 * @param string $class
 	 *
-	 * @return $output_html
+	 * @return $output
 	 * return the necessary ad code for the specified tag type
 	 *
 	 */
@@ -443,6 +443,18 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		}
 
+		if ( isset( $matching_ad_code['url_vars']['tag_header'] ) && '' !== $matching_ad_code['url_vars']['tag_header'] ) {
+			$tag_header = '<header class="m-ad-region-notice">' . $matching_ad_code['url_vars']['tag_header'] . '</header>';
+		} else {
+			$tag_header = '';
+		}
+
+		if ( isset( $matching_ad_code['url_vars']['tag_footer'] ) && '' !== $matching_ad_code['url_vars']['tag_footer'] ) {
+			$tag_footer = '<footer class="m-ad-region-notice">' . $matching_ad_code['url_vars']['tag_footer'] . '</footer>';
+		} else {
+			$tag_footer = '';
+		}
+
 		$output_html = '<div class="acm-ad ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
 
 		// use the function we already have for the placeholder ad
@@ -453,7 +465,13 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			$output_html = acm_no_ad_users( $output_html, $tag_id );
 		}
 
-		return $output_html . $output_script;
+		$output = $output_html . $output_script;
+
+		if ( '' !== $tag_header || '' !== $tag_footer ) {
+			$output = '<div class="acm-ad-wrapper ad-' . $matching_ad_code['url_vars']['tag_id'] . '">' . $tag_header . $output . $tag_footer . '</div>';
+		}
+
+		return $output;
 	}
 
 	/**

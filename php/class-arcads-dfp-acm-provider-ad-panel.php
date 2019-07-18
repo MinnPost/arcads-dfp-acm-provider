@@ -216,6 +216,18 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 				'editable' => true,
 				'required' => true,
 			),
+			array(
+				'key'      => 'tag_header',
+				'label'    => __( 'Tag Header Text (optional)', 'ad-code-manager' ),
+				'editable' => true,
+				'required' => false,
+			),
+			array(
+				'key'      => 'tag_footer',
+				'label'    => __( 'Tag Footer Text (optional)', 'ad-code-manager' ),
+				'editable' => true,
+				'required' => false,
+			),
 		);
 		return $ad_code_args;
 	}
