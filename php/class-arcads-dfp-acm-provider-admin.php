@@ -194,7 +194,7 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	* @return array Modified array of registered TinyMCE Plugins
 	*/
 	public function add_tinymce_plugin( $plugin_array ) {
-		$plugin_array['cms_ad'] = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/tinymce-cms-ad.min.js';
+		$plugin_array['cms_ad'] = plugin_dir_url( $this->file ) . '/assets/js/tinymce-cms-ad.min.js?v=' . filemtime( plugin_dir_path( $this->file ) . '/assets/js/tinymce-cms-ad.min.js' );
 		return $plugin_array;
 	}
 
