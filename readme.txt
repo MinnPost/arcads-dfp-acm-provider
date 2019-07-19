@@ -18,7 +18,7 @@ This plugin extends the [Ad Code Manager plugin](https://github.com/Automattic/A
 
 #### Activate the plugin
 
-In the Plugins list in WordPress, activate the plugin and find the settings link (you can also find this plugin's settings in the main Settings list in WordPress, under the AppNexus Ad Settings menu item once it is activated).
+In the Plugins list in WordPress, activate the plugin and find the settings link (you can also find this plugin's settings in the main Settings list in WordPress, under the ArcAds DFP Ad Settings menu item once it is activated).
 
 The plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=arcads-dfp-acm-provider`. Ad codes appear in the Ad Code Manager's interface at `https://<your site>/wp-admin/tools.php?page=ad-code-manager`.
 

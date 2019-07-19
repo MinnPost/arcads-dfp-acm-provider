@@ -51,7 +51,7 @@
 
 		_do_cms_ad : function( co ) {
 			return co.replace(/\[([cms_ad:]+):([^:\]]+)\]/g, function( a, b, c ) {
-				return '<img src="/wp-content/plugins/appnexus-acm-provider/assets/img/' + b + '.png" class="mceItem mceAdShortcode mceAdShortcode' + tinymce.DOM.encode( c ) + '" alt="' + tinymce.DOM.encode( b ) + ':' + tinymce.DOM.encode( c ) + '" data-shortcode="' + tinymce.DOM.encode( b ) + '" data-shortcode-type="' + tinymce.DOM.encode( c ) + '" data-mce-resize="false" data-mce-placeholder="1">';
+				return '<img src="/wp-content/plugins/arcads-dfp-acm-provider/assets/img/' + b + '.png" class="mceItem mceAdShortcode mceAdShortcode' + tinymce.DOM.encode( c ) + '" alt="' + tinymce.DOM.encode( b ) + ':' + tinymce.DOM.encode( c ) + '" data-shortcode="' + tinymce.DOM.encode( b ) + '" data-shortcode-type="' + tinymce.DOM.encode( c ) + '" data-mce-resize="false" data-mce-placeholder="1">';
 			});
 		},
 

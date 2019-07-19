@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="AppNexus ACM Provider">
+<ruleset name="ArcAds DFP ACM Provider">
 	<config name="minimum_supported_wp_version" value="4.6" />
 	<config name="testVersion" value="5.5-"/>
 
@@ -8,7 +8,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="appnexus-acm-provider" />
+			<property name="text_domain" type="array" value="arcads-dfp-acm-provider" />
 		</properties>
 	</rule>
 
