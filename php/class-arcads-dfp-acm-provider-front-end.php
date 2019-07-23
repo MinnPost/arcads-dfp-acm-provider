@@ -38,6 +38,8 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		$this->dfp_id = filter_var( get_option( $this->option_prefix . 'dfp_id', '1035012' ), FILTER_SANITIZE_STRING );
 
+		$this->collapse_empty_divs = filter_var( get_option( $this->option_prefix . 'collapse_empty_divs', false ), FILTER_VALIDATE_BOOLEAN );
+
 		$this->add_actions();
 
 	}
@@ -559,7 +561,8 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			"
 			const arcAds = new ArcAds({
 				dfp: {
-					id: '" . $this->dfp_id . "'
+					id: '" . $this->dfp_id . "',
+					collapseEmptyDivs: '" . $this->collapse_empty_divs . "',
 				}
 			});
 			"

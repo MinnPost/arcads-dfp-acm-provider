@@ -259,6 +259,17 @@ class ArcAds_DFP_ACM_Provider_Admin {
 					'default' => '1',
 				),
 			),
+			'collapse_empty_divs'           => array(
+				'title'    => __( 'Collapse empty divs', 'arcads-dfp-acm-provider' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'    => 'checkbox',
+					'desc'    => __( 'If checked, empty ad divs will be collapsed.', 'arcads-dfp-acm-provider' ),
+					'default' => '1',
+				),
+			),
 		);
 
 		$settings['lazy_load_ads'] = array(
