@@ -459,15 +459,20 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		$output_html = '<div class="acm-ad ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
 
-		// use the function we already have for the placeholder ad
-		if ( function_exists( 'acm_no_ad_users' ) ) {
-			if ( ! isset( $output_html ) ) {
-				$output_html = '';
-			}
-			$output_html = acm_no_ad_users( $output_html, $tag_id );
+		if ( ! isset( $output_html ) ) {
+			$output_html = '';
 		}
+		$output = array(
+			'html'   => $output_html,
+			'script' => $output_script,
+		);
 
-		$output = $output_html . $output_script;
+		// use the function we already have for the placeholder ad to filter what we're displaying
+		if ( function_exists( 'acm_no_ad_users' ) ) {
+			$output = acm_no_ad_users( $output, $tag_id );
+		} else {
+			$output = $output['html'] . $output['script'];
+		}
 
 		if ( '' !== $tag_header || '' !== $tag_footer ) {
 			$output = '<div class="acm-ad-wrapper ad-' . $matching_ad_code['url_vars']['tag_id'] . '">' . $tag_header . $output . $tag_footer . '</div>';
