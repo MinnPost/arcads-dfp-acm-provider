@@ -736,7 +736,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			return true;
 		}
 
-		// allow developers to prevent ads
+		// allow developers to prevent all ads
 		$prevent_ads = apply_filters( $this->option_prefix . 'prevent_ads', false, $post_id );
 		if ( true === $prevent_ads ) {
 			return true;
