@@ -105,11 +105,12 @@ function uglifyscripts() {
 
 // Optimize Images
 function images() {
-  return gulp.src(config.images.docs_src)
+  return gulp
+    .src(config.images.docs_src)
     .pipe(
       imagemin([
         imagemin.gifsicle({ interlaced: true }),
-        imagemin.jpegtran({ progressive: true }),
+        imagemin.mozjpeg({ quality: 90, progressive: true }),
         imagemin.optipng({ optimizationLevel: 5 }),
         imagemin.svgo({
           plugins: [

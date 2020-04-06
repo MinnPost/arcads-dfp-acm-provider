@@ -1,4 +1,4 @@
-# Copyright (C) 2019 arcads-dfp-acm-provider
+# Copyright (C) 2020 arcads-dfp-acm-provider
 # This file is distributed under the same license as the arcads-dfp-acm-provider package.
 msgid ""
 msgstr ""
@@ -123,70 +123,6 @@ msgstr ""
 
 #: php/class-arcads-dfp-acm-provider-admin.php:449
 msgid "If checked, the ad inserter will lazy load embed ads, even if it is not set to lazy load all the other ads."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:456
-msgid "Auto embed position"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:462
-msgid "Position for the in-story ad, if it is not otherwise included."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:466
-msgid "Auto embed top character offset"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:472
-msgid "How many characters from the top of the story to put the ad."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:476
-msgid "Auto embed bottom character offset"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:482
-msgid "How many characters from the bottom of the story to put the ad."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:489
-msgid "Embed tag prefix"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:495
-msgid "Embed tags start with this character."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:499
-msgid "First embed tag ID"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:505
-msgid "Pick the tag ID that starts the embed tags. The ad inserter will start here, and continue to the maximum number of embeds."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:510
-msgid "Number of paragraphs between each insertion"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:517
-msgid "The ad inserter will wait this number of paragraphs after the start of the article, insert the first ad zone, count this many more paragraphs, insert the second ad zone, and so on."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:521
-msgid "Last embed tag ID"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:532
-msgid "Minimum paragraph count"
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:539
-msgid "This setting allows you to prevent ads from appearing on posts with fewer paragraphs than the threshold."
-msgstr ""
-
-#: php/class-arcads-dfp-acm-provider-admin.php:665, php/class-arcads-dfp-acm-provider-admin.php:706, php/class-arcads-dfp-acm-provider-admin.php:864
-msgid "Defined in wp-config.php"
 msgstr ""
 
 #: php/class-arcads-dfp-acm-provider-loader.php:98
