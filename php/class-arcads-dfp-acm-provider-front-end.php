@@ -185,9 +185,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// Should we skip rendering ads?
 		$should_we_skip = $this->should_we_skip_ads( $content, $post_type, $post_id, $in_editor );
-		if ( true === $should_we_skip ) {
-			return $content;
-		}
 
 		// Render any `[cms_ad` shortcodes, whether they were manually added or added by this plugin
 		// this should also be used to render the shortcodes added in the editor
@@ -218,7 +215,16 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 				$rewrite[] = $this->get_code_to_insert( $position );
 				$matched[] = $matches[0][ $key ];
 			}
+
+			if ( true === $should_we_skip ) {
+				$rewrite = '';
+			}
+
 			return str_replace( $matched, $rewrite, $content );
+		} else {
+			if ( true === $should_we_skip ) {
+				return $content;
+			}
 		}
 
 		$ad_code_manager = $this->ad_code_manager;
@@ -709,26 +715,29 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			return true;
 		}
 
-		// If this post has the option set to not add automatic ads, do not add them to the editor view. If we're not in the editor, ignore this value because they would be manually added at this point.
+		// If this post has the option set to not add automatic ads, do not add them to the editor view. If we're not in the editor, ignore this value because they would have been manually added at this point.
 		// This field name is stored in the plugin options.
 		$field_automatic_name  = get_option( $this->option_prefix . 'prevent_automatic_ads_field', '_post_prevent_arcads_ads' );
 		$field_automatic_value = get_option( $this->option_prefix . 'prevent_automatic_ads_field_value', 'on' );
+
+		// If we are in the editor, this determines whether ads automatically get added.
 		if ( true === $in_editor && get_post_meta( $post_id, $field_automatic_name, true ) === $field_automatic_value ) {
 			return true;
 		}
 
-		// If this post has that option set to not add automatic ads, skip them in the front end view unless they have been manually added.
-		if ( false === $in_editor && get_post_meta( $post_id, $field_automatic_name, true ) === $field_automatic_value && false === stripos( $content, '[cms_ad' ) && false === stripos( $content, '<img class="mceItem mceAdShortcode' ) ) {
-			return true;
-		}
-
-		// allow developers to prevent automatic ads
+		// In the front end view, if this post has the above option set to not add automatic ads, skip them unless they have been manually added.
+		// We can also set this value with a developer hook.
 		$prevent_automatic_ads = apply_filters( $this->option_prefix . 'prevent_automatic_ads', false, $post_id );
-		if ( true === $prevent_automatic_ads ) {
+		$skip_automatic_ads    = false; // default it to false
+		if ( get_post_meta( $post_id, $field_automatic_name, true ) === $field_automatic_value || true === $prevent_automatic_ads ) {
+			$skip_automatic_ads = true;
+		}
+
+		if ( false === $in_editor && true === $skip_automatic_ads && false === stripos( $content, '[cms_ad' ) && false === stripos( $content, '<img class="mceItem mceAdShortcode' ) ) {
 			return true;
 		}
 
-		// Stop if this post has the option set to not add any ads.
+		// Stop altogether if this post has the option set to not add any ads.
 		// This field name is stored in the plugin options.
 		$field_name  = get_option( $this->option_prefix . 'prevent_ads_field', '_post_prevent_arcads_ads' );
 		$field_value = get_option( $this->option_prefix . 'prevent_ads_field_value', 'on' );
@@ -736,7 +745,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			return true;
 		}
 
-		// allow developers to prevent ads
+		// allow developers to prevent all ads
 		$prevent_ads = apply_filters( $this->option_prefix . 'prevent_ads', false, $post_id );
 		if ( true === $prevent_ads ) {
 			return true;
