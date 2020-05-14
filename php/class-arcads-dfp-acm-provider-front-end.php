@@ -62,7 +62,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		add_filter( 'the_content_feed', array( $this, 'insert_and_render_inline_ads' ), 2000 );
 
 		// add javascript
-		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 20 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
 		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
 	}
@@ -554,12 +554,13 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	}
 
 	/**
-	* Enqueue JavaScript for front end
+	* Enqueue JavaScript and CSS for front end
 	*
 	*/
-	public function add_scripts() {
+	public function add_scripts_and_styles() {
 
 		$arcads_dependencies = array();
+		$css_dependencies    = array();
 
 		// put the polyfill for intersectionobserver here
 		if ( true === filter_var( get_option( $this->option_prefix . 'use_intersectionobserver_polyfill', false ), FILTER_VALIDATE_BOOLEAN ) ) {
@@ -611,6 +612,8 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 				"
 			);
 		}
+
+		wp_enqueue_style( $this->slug . '-front-end', plugins_url( 'assets/css/' . $this->slug . '-front-end.min.css', dirname( __FILE__ ) ), $css_dependencies, filemtime( plugin_dir_path( dirname( __FILE__ ) ) . 'assets/css/' . $this->slug . '-front-end.min.css' ), 'all' );
 	}
 
 	/**
