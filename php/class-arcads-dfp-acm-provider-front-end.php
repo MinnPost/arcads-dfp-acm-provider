@@ -463,7 +463,13 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			$tag_footer = '';
 		}
 
-		$output_html = '<div class="acm-ad ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
+		$more_classes = '';
+		$ad_border    = get_option( $this->option_prefix . 'border_around_ads', '0' );
+		if ( '1' === $ad_border ) {
+			$more_classes = ' acm-ad-bordered';
+		}
+
+		$output_html = '<div class="acm-ad' . $more_classes . ' ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
 
 		if ( ! isset( $output_html ) ) {
 			$output_html = '';

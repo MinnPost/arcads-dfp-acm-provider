@@ -248,6 +248,17 @@ class ArcAds_DFP_ACM_Provider_Admin {
 					'desc' => __( 'Enter comma separated list of tags.', 'arcads-dfp-acm-provider' ),
 				),
 			),
+			'border_around_ads'             => array(
+				'title'    => __( 'Top and bottom border on ads', 'arcads-dfp-acm-provider' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'    => 'checkbox',
+					'desc'    => __( 'Each ad will have a top and bottom border.', 'arcads-dfp-acm-provider' ),
+					'default' => '1',
+				),
+			),
 			'show_ads_without_conditionals' => array(
 				'title'    => __( 'Show ads without conditionals', 'arcads-dfp-acm-provider' ),
 				'callback' => $callbacks['text'],
