@@ -3,8 +3,8 @@ Contributors: minnpost, jonathanstegall
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: ads, ad code manager, arcads, dfp
 Requires at least: 4.9
-Tested up to: 5.0
-Stable tag: 0.0.1
+Tested up to: 5.4
+Stable tag: 0.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,12 @@ The plugin's settings URL is `https://<your site>/wp-admin/options-general.php?p
 
 == Changelog ==
 
-* 0.0.1 (2019-06-19)
+* 0.0.3 (2020-05-15)
+    * Add setting for top/bottom border that can go around ads.
+    * Add setting for before/after text that can go around ads.
 
+* 0.0.2 (2020-04-06)
+    * Previously the prevent ads field only stopped ads from being added to the content. If a post had existing ad shortcodes, they stayed in the content without being rendered as ads. This removes them from the content instead.
+
+* 0.0.1 (2019-06-19)
     * Basic plugin that generates code for the ArcAd wrapper on DFP ads within the ACM plugin.
