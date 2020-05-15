@@ -259,6 +259,35 @@ class ArcAds_DFP_ACM_Provider_Admin {
 					'default' => '1',
 				),
 			),
+			'text_before_ad'                => array(
+				'title'    => __( 'Text before ad is displayed', 'arcads-dfp-acm-provider' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'text',
+					'desc' => __( 'This text will show right before the advertisement.', 'arcads-dfp-acm-provider' ),
+				),
+			),
+			'text_after_ad'                 => array(
+				'title'    => __( 'Text after ad is displayed', 'arcads-dfp-acm-provider' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'text',
+					'desc' => __( 'This text will show right after the advertisement.', 'arcads-dfp-acm-provider' ),
+				),
+			),
+			'tags_no_border_or_text'        => array(
+				'title'    => __( 'No border or text around these tags', 'arcads-dfp-acm-provider' ),
+				'callback' => $callbacks['textarea'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'desc' => __( 'Tags in this field will not have a border, or before/after text. This could be useful for a more condensed display in site headers or footers, for example.', 'arcads-dfp-acm-provider' ),
+				),
+			),
 			'show_ads_without_conditionals' => array(
 				'title'    => __( 'Show ads without conditionals', 'arcads-dfp-acm-provider' ),
 				'callback' => $callbacks['text'],

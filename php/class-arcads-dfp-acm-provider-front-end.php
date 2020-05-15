@@ -463,13 +463,34 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			$tag_footer = '';
 		}
 
-		$more_classes = '';
-		$ad_border    = get_option( $this->option_prefix . 'border_around_ads', '0' );
-		if ( '1' === $ad_border ) {
-			$more_classes = ' acm-ad-bordered';
+		$tags_no_border_or_text = explode( ', ', get_option( $this->option_prefix . 'tags_no_border_or_text', '' ) );
+		$tags_no_border_or_text = array_map( 'trim', $tags_no_border_or_text );
+		$ad_border              = false;
+		$text_before_ad         = '';
+		$text_after_ad          = '';
+
+		if ( ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text ) ) {
+			$ad_border      = get_option( $this->option_prefix . 'border_around_ads', '0' );
+			$text_before_ad = get_option( $this->option_prefix . 'text_before_ad', '' );
+			$text_after_ad  = get_option( $this->option_prefix . 'text_after_ad', '' );
+			if ( '' !== $text_before_ad ) {
+				$text_before_ad = '<div class="a-text-around-ad a-text-before-ad">' . apply_filters( 'the_content', $text_before_ad ) . '</div>';
+			}
+			if ( '' !== $text_after_ad ) {
+				$text_after_ad = '<div class="a-text-around-ad a-text-after-ad">' . apply_filters( 'the_content', $text_after_ad ) . '</div>';
+			}
 		}
 
-		$output_html = '<div class="acm-ad' . $more_classes . ' ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
+		$output_html = '<div class="acm-ad ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
+
+		$more_classes = '';
+		if ( '1' === $ad_border && ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text ) ) {
+			$more_classes = ' acm-ad-container-bordered';
+		}
+
+		if ( '' !== $text_before_ad || '' !== $text_after_ad || '1' === $ad_border ) {
+			$output_html = '<div class="acm-ad-container' . $more_classes . '">' . $text_before_ad . $output_html . $text_after_ad . '</div>';
+		}
 
 		if ( ! isset( $output_html ) ) {
 			$output_html = '';

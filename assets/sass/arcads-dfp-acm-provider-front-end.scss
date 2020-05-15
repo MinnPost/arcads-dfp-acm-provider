@@ -1,6 +1,42 @@
-.acm-ad-bordered {
-	border: 1px solid #ddd;
-	border-left: 0;
-	border-right: 0;
-	padding: 1.5em 0;
+$space-default: 0.5em;
+
+// has a border and/or text before/after the ad
+.acm-ad-container {
+
+	&.acm-ad-container-bordered {
+		border: 1px solid #ddd;
+		border-left: 0;
+		border-right: 0;
+		margin: $space-default 0 $space-default * 3 0;
+	}
+
+	.acm-ad {
+		margin-bottom: $space-default;
+
+		&:last-child {
+			margin-bottom: $space-default * 2;	
+		}
+	}
+
+	.a-text-around-ad {
+		text-align: center;
+		font-size: 0.6em;
+		font-family: Helvetica, Arial, sans-serif;
+		color: #bbb;
+		text-transform: uppercase;
+
+		p {
+			margin: 0;
+			padding: 0;
+		}
+
+		&.a-text-before-ad {
+			padding: $space-default 0;
+		}
+
+		&.a-text-after-ad {
+			padding: 0 0 $space-default 0;
+		}
+	}
+
 }
