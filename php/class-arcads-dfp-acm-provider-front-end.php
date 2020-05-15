@@ -473,6 +473,41 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			$ad_border      = get_option( $this->option_prefix . 'border_around_ads', '0' );
 			$text_before_ad = get_option( $this->option_prefix . 'text_before_ad', '' );
 			$text_after_ad  = get_option( $this->option_prefix . 'text_after_ad', '' );
+
+			// different before/after text for embed ads
+			$is_embed_ad     = false;
+			$multiple_embeds = get_option( $this->option_prefix . 'multiple_embeds', '0' );
+			if ( is_array( $multiple_embeds ) ) {
+				$multiple_embeds = $multiple_embeds[0];
+			}
+
+			// if multiples are enabled, check to see if the id is in the embed tag range
+			if ( '1' === $multiple_embeds ) {
+				$embed_prefix        = get_option( $this->option_prefix . 'embed_prefix', 'x' );
+				$start_embed_id      = get_option( $this->option_prefix . 'start_tag_id', 'x100' );
+				$start_embed_count   = intval( str_replace( $embed_prefix, '', $start_embed_id ) ); // ex 100
+				$end_embed_id        = get_option( $this->option_prefix . 'end_tag_id', 'x110' );
+				$end_embed_count     = intval( str_replace( $embed_prefix, '', $end_embed_id ) ); // ex 110
+				$current_embed_count = intval( str_replace( $embed_prefix, '', $matching_ad_code['url_vars']['tag_id'] ) ); // ex 108
+				if ( ( $current_embed_count >= $start_embed_count && $current_embed_count <= $end_embed_count ) ) {
+					$is_embed_ad = true;
+				}
+			}
+			// if there is an auto embed ad, we should auto load it also.
+			$auto_embed = get_option( $this->option_prefix . 'auto_embed_position', 'Middle' );
+			if ( $auto_embed === $matching_ad_code['url_vars']['tag_id'] ) {
+				$is_embed_ad = true;
+			}
+
+			if ( ! is_singular() ) {
+				$is_embed_ad = false;
+			}
+
+			if ( true === $is_embed_ad ) {
+				$text_before_ad = get_option( $this->option_prefix . 'embed_text_before_ad', $text_before_ad );
+				$text_after_ad  = get_option( $this->option_prefix . 'embed_text_after_ad', $text_after_ad );
+			}
+
 			if ( '' !== $text_before_ad ) {
 				$text_before_ad = '<div class="a-text-around-ad a-text-before-ad">' . apply_filters( 'the_content', $text_before_ad ) . '</div>';
 			}
@@ -567,7 +602,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			// allow individual posts to disable lazyload. this can be useful in the case of unresolvable javascript conflicts.
 			if ( is_singular() ) {
 				global $post;
-				if ( get_post_meta( $post->ID, 'arcads_dfp_acm_provider_post_prevent_lazyload', true ) ) {
+				if ( get_post_meta( $post->ID, $this->option_prefix . 'post_prevent_lazyload', true ) ) {
 					$lazy_load = false;
 				}
 			}

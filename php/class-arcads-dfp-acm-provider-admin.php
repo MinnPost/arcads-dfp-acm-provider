@@ -477,6 +477,26 @@ class ArcAds_DFP_ACM_Provider_Admin {
 							'default' => 'on',
 						),
 					),
+					'embed_text_before_ad'              => array(
+						'title'    => __( 'Override text before ad is displayed', 'arcads-dfp-acm-provider' ),
+						'callback' => $callbacks['text'],
+						'page'     => $page,
+						'section'  => $section,
+						'args'     => array(
+							'type' => 'text',
+							'desc' => __( 'This text will show right before the advertisement, only on embed ads.', 'arcads-dfp-acm-provider' ),
+						),
+					),
+					'embed_text_after_ad'               => array(
+						'title'    => __( 'Override text after ad is displayed', 'arcads-dfp-acm-provider' ),
+						'callback' => $callbacks['text'],
+						'page'     => $page,
+						'section'  => $section,
+						'args'     => array(
+							'type' => 'text',
+							'desc' => __( 'This text will show right after the advertisement, only on embed ads.', 'arcads-dfp-acm-provider' ),
+						),
+					),
 				);
 
 				$embed_settings['lazy_load_embeds'] = array(

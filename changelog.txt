@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 0.0.4 (2020-05-15)
+    * Override setting for before/after text for embed ads only.
+
 * 0.0.3 (2020-05-15)
     * Add setting for top/bottom border that can go around ads.
     * Add setting for before/after text that can go around ads.
