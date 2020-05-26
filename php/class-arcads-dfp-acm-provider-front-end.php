@@ -439,15 +439,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 			$arcads_prerender = $this->lazy_loaded_or_not( $matching_ad_code['url_vars']['tag_id'] );
 
-			$output_script = "
-			<script>
-				arcAds.registerAd({
-					id: 'acm-ad-tag-" . esc_attr( $matching_ad_code['url_vars']['tag_id'] ) . "',
-					slotName: '" . esc_attr( $matching_ad_code['url_vars']['tag_name'] ) . "',
-					dimensions: " . json_encode( $unit_sizes ) . $targeting . $arcads_prerender . ',
-				});
-			</script>
-			';
+			$output_script = "<div><script>arcAds.registerAd({id: 'acm-ad-tag-" . esc_attr( $matching_ad_code['url_vars']['tag_id'] ) . "',slotName: '" . esc_attr( $matching_ad_code['url_vars']['tag_name'] ) . "',dimensions: " . json_encode( $unit_sizes ) . $targeting . $arcads_prerender . ',});</script></div>';
 
 		}
 
