@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 0.0.5 (2020-07-10)
+    * Override setting for before/after border for embed ads only.
+    * Fix bug that could cause paragraph breaks inside the `<script>` tag
+
 * 0.0.4 (2020-05-15)
     * Override setting for before/after text for embed ads only.
 
