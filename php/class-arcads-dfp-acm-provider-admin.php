@@ -477,6 +477,17 @@ class ArcAds_DFP_ACM_Provider_Admin {
 							'default' => 'on',
 						),
 					),
+					'border_around_embed_ads'          => array(
+						'title'    => __( 'Top and bottom border on embed ads', 'arcads-dfp-acm-provider' ),
+						'callback' => $callbacks['text'],
+						'page'     => $page,
+						'section'  => $section,
+						'args'     => array(
+							'type'    => 'checkbox',
+							'desc'    => __( 'If checked, each embed ad will have a top and bottom border, regardless of what the plugin-wide setting says.', 'arcads-dfp-acm-provider' ),
+							'default' => '1',
+						),
+					),
 					'embed_text_before_ad'              => array(
 						'title'    => __( 'Override text before ad is displayed', 'arcads-dfp-acm-provider' ),
 						'callback' => $callbacks['text'],

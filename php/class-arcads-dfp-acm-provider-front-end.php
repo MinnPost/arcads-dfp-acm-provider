@@ -496,6 +496,9 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			}
 
 			if ( true === $is_embed_ad ) {
+				if ( '1' !== $ad_border ) {
+					$ad_border = get_option( $this->option_prefix . 'border_around_embed_ads', '0' );
+				}
 				$text_before_ad = get_option( $this->option_prefix . 'embed_text_before_ad', $text_before_ad );
 				$text_after_ad  = get_option( $this->option_prefix . 'embed_text_after_ad', $text_after_ad );
 			}
