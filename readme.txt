@@ -3,7 +3,7 @@ Contributors: minnpost, jonathanstegall
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: ads, ad code manager, arcads, dfp
 Requires at least: 4.9
-Tested up to: 5.4
+Tested up to: 5.7
 Stable tag: 0.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,6 +23,10 @@ In the Plugins list in WordPress, activate the plugin and find the settings link
 The plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=arcads-dfp-acm-provider`. Ad codes appear in the Ad Code Manager's interface at `https://<your site>/wp-admin/tools.php?page=ad-code-manager`.
 
 == Changelog ==
+
+* 0.0.6 (2021-03-11)
+    * When editing posts that have ads, make sure they preserve the spacing that should be around them instead of running into the paragraphs before or after the ads.
+    * Upgrade the Arcads library to version 3.0.0.
 
 * 0.0.5 (2020-07-10)
     * Override setting for before/after border for embed ads only.

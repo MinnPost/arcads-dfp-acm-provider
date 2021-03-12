@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 0.0.6 (2021-03-11)
+    * When editing posts that have ads, make sure they preserve the spacing that should be around them instead of running into the paragraphs before or after the ads.
+    * Upgrade the Arcads library to version 3.0.0.
+
 * 0.0.5 (2020-07-10)
     * Override setting for before/after border for embed ads only.
     * Fix bug that could cause paragraph breaks inside the `<script>` tag
