@@ -288,7 +288,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 					if ( false === $in_editor ) {
 						$shortcode = $this->get_code_to_insert( $embed_prefix . (int) $embed_count );
 					} elseif ( true === $in_editor ) {
-						$shortcode = "\n" . '[cms_ad:' . $embed_prefix . (int) $embed_count . ']' . "\n\n";
+						$shortcode = '[cms_ad:' . $embed_prefix . (int) $embed_count . ']';
 					}
 					$otherblocks = '(?:div|dd|dt|li|pre|fieldset|legend|figcaption|details|thead|tfoot|tr|td|style|script|link|h1|h2|h3|h4|h5|h6)';
 					if ( preg_match( '!(<' . $otherblocks . '[\s/>])!', $paragraphs[ $i ], $m ) ) {
