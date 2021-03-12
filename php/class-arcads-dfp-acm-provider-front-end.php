@@ -370,6 +370,9 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		$ad_code_manager  = $this->ad_code_manager;
 		$ad_tags          = $ad_code_manager->ad_tag_ids;
 		$matching_ad_code = $ad_code_manager->get_matching_ad_code( $tag_id );
+		if ( null === $matching_ad_code ) {
+			return '';
+		}
 		if ( ! empty( $matching_ad_code ) ) {
 			$tt = $matching_ad_code['url_vars'];
 			// @todo There might be a case when there are two tags registered with the same dimensions

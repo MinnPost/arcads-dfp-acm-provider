@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 0.0.7 (2021-03-12)
+    * Account for when the ad code is null instead of empty.
+
 * 0.0.6 (2021-03-11)
     * When editing posts that have ads, make sure they preserve the spacing that should be around them instead of running into the paragraphs before or after the ads.
     * Upgrade the Arcads library to version 3.0.0.
