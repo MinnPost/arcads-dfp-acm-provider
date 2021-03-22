@@ -3,7 +3,7 @@
 Plugin Name: ArcAds DFP ACM Provider
 Plugin URI:
 Description:
-Version: 0.0.7
+Version: 0.0.8
 Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
@@ -34,7 +34,7 @@ define( 'ARCADS_DFP_ACM_PROVIDER_FILE', __FILE__ );
  * @since 0.0.1
  * @var string
  */
-define( 'ARCADS_DFP_ACM_PROVIDER_VERSION', '0.0.7' );
+define( 'ARCADS_DFP_ACM_PROVIDER_VERSION', '0.0.8' );
 
 // Load the autoloader.
 require_once( 'lib/autoloader.php' );

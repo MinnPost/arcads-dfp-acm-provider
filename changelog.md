@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 0.0.8 (2021-03-22)
+    * The spacing is too much.
+
 * 0.0.7 (2021-03-12)
     * Account for when the ad code is null instead of empty.
 
