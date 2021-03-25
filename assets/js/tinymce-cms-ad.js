@@ -37,7 +37,7 @@
 			        return;
 			    }
 			    // Insert selected text back into editor as a cms_ad shortcode
-			    ed.execCommand( 'mceReplaceContent', false, '[cms_ad:' + result + ']<br>' );
+			    ed.execCommand( 'mceReplaceContent', false, '[cms_ad:' + result + ']' );
 			});
 
 			// Add Ad to Visual Editor Toolbar
@@ -67,7 +67,7 @@
 				var shortcode = tinymce.trim( getAttr( im, 'data-shortcode' ) );
 				var type = tinymce.trim( getAttr( im, 'data-shortcode-type' ) );
 				if ( -1 !== cls.indexOf( 'mceAdShortcode' ) && '' !== shortcode && '' !== type ) {
-					return '[' + shortcode + ':' + type + ']<br>';
+					return '[' + shortcode + ':' + type + ']';
 				}
 				return a;
 			});
