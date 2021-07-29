@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 0.0.9 (2021-07-29)
+    * Upgrade the ArcAds library to 4.0.1.
+
 * 0.0.8 (2021-03-22)
     * The spacing is too much.
 
