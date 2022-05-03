@@ -205,7 +205,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		// this should also be used to render the shortcodes added in the editor
 		$shortcode = 'cms_ad';
 		$pattern   = $this->get_single_shortcode_regex( $shortcode );
-		if ( preg_match_all( $pattern, $content, $matches ) && array_key_exists( 2, $matches ) && in_array( $shortcode, $matches[2] ) ) {
+		if ( preg_match_all( $pattern, $content, $matches ) && array_key_exists( 2, $matches ) && in_array( $shortcode, $matches[2], true ) ) {
 
 			/*
 			[0] => Array (
@@ -281,7 +281,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			$end_embed_id      = get_option( $this->option_prefix . 'end_tag_id', 'x110' );
 			$end_embed_count   = intval( str_replace( $embed_prefix, '', $end_embed_id ) ); // ex 110
 
-			$paragraphs = [];
+			$paragraphs = array();
 			$split      = explode( $paragraph_end, $content );
 			foreach ( $split as $paragraph ) {
 				// filter out empty paragraphs
@@ -479,7 +479,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		$text_before_ad         = '';
 		$text_after_ad          = '';
 
-		if ( ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text ) ) {
+		if ( ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text, true ) ) {
 			$ad_border      = get_option( $this->option_prefix . 'border_around_ads', '0' );
 			$text_before_ad = get_option( $this->option_prefix . 'text_before_ad', '' );
 			$text_after_ad  = get_option( $this->option_prefix . 'text_after_ad', '' );
@@ -532,7 +532,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		$output_html = '<div class="acm-ad ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
 
 		$more_classes = '';
-		if ( '1' === $ad_border && ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text ) ) {
+		if ( '1' === $ad_border && ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text, true ) ) {
 			$more_classes = ' acm-ad-container-bordered';
 		}
 
@@ -789,7 +789,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// Don't add ads if this post is not a supported type
 		$post_types = get_option( $this->option_prefix . 'post_types', array( 'post' ) );
-		if ( ! in_array( $post_type, $post_types ) ) {
+		if ( ! in_array( $post_type, $post_types, true ) ) {
 			return true;
 		}
 
