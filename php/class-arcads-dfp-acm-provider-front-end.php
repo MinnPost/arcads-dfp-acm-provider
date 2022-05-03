@@ -48,6 +48,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		add_filter( 'acm_output_tokens', array( $this, 'acm_output_tokens' ), 15, 3 );
 		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), 10, 2 );
 		add_filter( 'acm_display_ad_codes_without_conditionals', array( $this, 'check_conditionals' ) );
+		//add_filter( 'acm_whitelisted_conditionals', array( $this, 'allowed_conditionals' ) );
 		add_filter( 'acm_conditional_args', array( $this, 'conditional_args' ), 10, 2 );
 
 		// disperse shortcodes in the editor if the settings say to
@@ -127,6 +128,19 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	}
 
 	/**
+	 * Add conditionals to the allowed list.
+	 * As far as I can tell, we don't actually need this.
+	 *
+	 * @param array $conditionals
+	 * @return array $conditionals
+	 *
+	 */
+	/*public function allowed_conditionals( $conditionals ) {
+		$conditionals[] = 'is_singular';
+		return $conditionals;
+	}*/
+
+	/**
 	 * Additional arguments for conditionals
 	 *
 	 * @param array $args
@@ -139,11 +153,12 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		// has_category and has_tag use has_term
 		// we should pass queried object id for it to produce correct result
 
-		if ( in_array( $function, array( 'has_category', 'has_tag' ) ) ) {
+		if ( in_array( $function, array( 'has_category', 'has_tag' ), true ) ) {
 			if ( true === $wp_query->is_single ) {
 				$args[] = $wp_query->queried_object->ID;
 			}
-			$args['is_singular'] = true;
+			// as far as I can tell, we don't actually need this. It causes errors in PHP 8.
+			//$args['is_singular'] = true;
 		}
 		return $args;
 	}
@@ -716,7 +731,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * return the post content into the editor with shortcodes for ads inside it at the proper places
 	 *
 	 */
-	public function insert_inline_ad_in_editor( $content = '', $post_id ) {
+	public function insert_inline_ad_in_editor( $content, $post_id ) {
 
 		/*
 		// todo: i think this would be nice, but i think it won't work like this
