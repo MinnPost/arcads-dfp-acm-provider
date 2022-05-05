@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 0.0.10 (2022-05-04)
+    * Fix issues that occur in PHP 8.0.
+    * Improve WordPress Code Standards formatting.
+    * Upgrade the ArcAds library to 6.2.0.
+
 * 0.0.9 (2021-07-29)
     * Upgrade the ArcAds library to 4.0.1.
 
