@@ -48,6 +48,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		add_filter( 'acm_output_tokens', array( $this, 'acm_output_tokens' ), 15, 3 );
 		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), 10, 2 );
 		add_filter( 'acm_display_ad_codes_without_conditionals', array( $this, 'check_conditionals' ) );
+		//add_filter( 'acm_whitelisted_conditionals', array( $this, 'allowed_conditionals' ) );
 		add_filter( 'acm_conditional_args', array( $this, 'conditional_args' ), 10, 2 );
 
 		// disperse shortcodes in the editor if the settings say to
@@ -127,6 +128,19 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	}
 
 	/**
+	 * Add conditionals to the allowed list.
+	 * As far as I can tell, we don't actually need this.
+	 *
+	 * @param array $conditionals
+	 * @return array $conditionals
+	 *
+	 */
+	/*public function allowed_conditionals( $conditionals ) {
+		$conditionals[] = 'is_singular';
+		return $conditionals;
+	}*/
+
+	/**
 	 * Additional arguments for conditionals
 	 *
 	 * @param array $args
@@ -139,11 +153,12 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		// has_category and has_tag use has_term
 		// we should pass queried object id for it to produce correct result
 
-		if ( in_array( $function, array( 'has_category', 'has_tag' ) ) ) {
+		if ( in_array( $function, array( 'has_category', 'has_tag' ), true ) ) {
 			if ( true === $wp_query->is_single ) {
 				$args[] = $wp_query->queried_object->ID;
 			}
-			$args['is_singular'] = true;
+			// as far as I can tell, we don't actually need this. It causes errors in PHP 8.
+			//$args['is_singular'] = true;
 		}
 		return $args;
 	}
@@ -190,7 +205,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		// this should also be used to render the shortcodes added in the editor
 		$shortcode = 'cms_ad';
 		$pattern   = $this->get_single_shortcode_regex( $shortcode );
-		if ( preg_match_all( $pattern, $content, $matches ) && array_key_exists( 2, $matches ) && in_array( $shortcode, $matches[2] ) ) {
+		if ( preg_match_all( $pattern, $content, $matches ) && array_key_exists( 2, $matches ) && in_array( $shortcode, $matches[2], true ) ) {
 
 			/*
 			[0] => Array (
@@ -266,7 +281,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 			$end_embed_id      = get_option( $this->option_prefix . 'end_tag_id', 'x110' );
 			$end_embed_count   = intval( str_replace( $embed_prefix, '', $end_embed_id ) ); // ex 110
 
-			$paragraphs = [];
+			$paragraphs = array();
 			$split      = explode( $paragraph_end, $content );
 			foreach ( $split as $paragraph ) {
 				// filter out empty paragraphs
@@ -464,7 +479,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		$text_before_ad         = '';
 		$text_after_ad          = '';
 
-		if ( ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text ) ) {
+		if ( ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text, true ) ) {
 			$ad_border      = get_option( $this->option_prefix . 'border_around_ads', '0' );
 			$text_before_ad = get_option( $this->option_prefix . 'text_before_ad', '' );
 			$text_after_ad  = get_option( $this->option_prefix . 'text_after_ad', '' );
@@ -517,7 +532,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		$output_html = '<div class="acm-ad ad-' . $matching_ad_code['url_vars']['tag_id'] . '" id="acm-ad-tag-' . $matching_ad_code['url_vars']['tag_id'] . '"></div>';
 
 		$more_classes = '';
-		if ( '1' === $ad_border && ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text ) ) {
+		if ( '1' === $ad_border && ! in_array( $matching_ad_code['url_vars']['tag_id'], $tags_no_border_or_text, true ) ) {
 			$more_classes = ' acm-ad-container-bordered';
 		}
 
@@ -716,7 +731,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * return the post content into the editor with shortcodes for ads inside it at the proper places
 	 *
 	 */
-	public function insert_inline_ad_in_editor( $content = '', $post_id ) {
+	public function insert_inline_ad_in_editor( $content, $post_id ) {
 
 		/*
 		// todo: i think this would be nice, but i think it won't work like this
@@ -774,7 +789,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// Don't add ads if this post is not a supported type
 		$post_types = get_option( $this->option_prefix . 'post_types', array( 'post' ) );
-		if ( ! in_array( $post_type, $post_types ) ) {
+		if ( ! in_array( $post_type, $post_types, true ) ) {
 			return true;
 		}
 
