@@ -59,8 +59,8 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	* @return void
 	*/
 	public function admin_scripts_and_styles() {
-		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/' . $this->slug . '-admin.min.js', dirname( __FILE__ ) ), array( 'jquery' ), filemtime( plugin_dir_path( $this->file ) . '/assets/js/' . $this->slug . '-admin.min.js' ), true );
-		//wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/' . $this->slug . '-admin.min.css', dirname( __FILE__ ) ), array(), $this->version, 'all' );
+		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/' . $this->slug . '-admin.min.js', $this->file ), array( 'jquery' ), $this->version, true );
+		//wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/' . $this->slug . '-admin.min.css', $this->file ), array(), $this->version, 'all' );
 	}
 
 	private function get_admin_tabs() {
@@ -89,13 +89,13 @@ class ArcAds_DFP_ACM_Provider_Admin {
 
 			switch ( $tab ) {
 				case 'arcads_dfp_acm_settings':
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+					require_once( plugin_dir_path( $this->file ) . '/templates/admin/settings.php' );
 					break;
 				case 'embed_ads_settings':
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+					require_once( plugin_dir_path( $this->file ) . '/templates/admin/settings.php' );
 					break;
 				default:
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+					require_once( plugin_dir_path( $this->file ) . '/templates/admin/settings.php' );
 					break;
 			} // End switch().
 			?>
@@ -194,7 +194,7 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	* @return array Modified array of registered TinyMCE Plugins
 	*/
 	public function add_tinymce_plugin( $plugin_array ) {
-		$plugin_array['cms_ad'] = plugin_dir_url( $this->file ) . '/assets/js/tinymce-cms-ad.min.js?v=' . filemtime( plugin_dir_path( $this->file ) . '/assets/js/tinymce-cms-ad.min.js' );
+		$plugin_array['cms_ad'] = plugin_dir_url( $this->file ) . '/assets/js/tinymce-cms-ad.min.js?v=' . $this->version;
 		return $plugin_array;
 	}
 

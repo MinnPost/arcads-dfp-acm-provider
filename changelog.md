@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 0.0.11 (2022-06-06)
+    * Better versioning of CSS and JavaScript files.
+
 * 0.0.10 (2022-05-04)
     * Fix issues that occur in PHP 8.0.
     * Improve WordPress Code Standards formatting.
