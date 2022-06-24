@@ -14,8 +14,8 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	public $capability;
 
 	/**
-	* Constructor which sets up admin pages
-	*/
+	 * Constructor which sets up admin pages
+	 */
 	public function __construct() {
 
 		$this->version       = arcads_dfp_acm_provider()->version;
@@ -31,9 +31,8 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Create the action hooks to create the admin page(s)
-	*
-	*/
+	 * Create the action hooks to create the admin page(s)
+	 */
 	public function add_actions() {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
@@ -45,22 +44,22 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Default display for <input> fields
-	*
-	* @param array $args
-	*/
+	 * Default display for <input> fields
+	 *
+	 * @param array $args
+	 */
 	public function create_admin_menu() {
 		add_options_page( __( 'ArcAds DFP Ad Settings', 'arcads-dfp-acm-provider' ), __( 'ArcAds DFP Ad Settings', 'arcads-dfp-acm-provider' ), $this->capability, 'arcads-dfp-acm-provider', array( $this, 'show_admin_page' ) );
 	}
 
 	/**
-	* Admin styles. Load the CSS and/or JavaScript for the plugin's settings
-	*
-	* @return void
-	*/
+	 * Admin styles. Load the CSS and/or JavaScript for the plugin's settings
+	 *
+	 * @return void
+	 */
 	public function admin_scripts_and_styles() {
 		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/' . $this->slug . '-admin.min.js', $this->file ), array( 'jquery' ), $this->version, true );
-		//wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/' . $this->slug . '-admin.min.css', $this->file ), array(), $this->version, 'all' );
+		// wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/' . $this->slug . '-admin.min.css', $this->file ), array(), $this->version, 'all' );
 	}
 
 	private function get_admin_tabs() {
@@ -72,15 +71,15 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Display the admin settings page
-	*
-	* @return void
-	*/
+	 * Display the admin settings page
+	 *
+	 * @return void
+	 */
 	public function show_admin_page() {
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
 		?>
 		<div class="wrap">
-			<h1><?php _e( get_admin_page_title() , 'arcads-dfp-acm-provider' ); ?></h1>
+			<h1><?php _e( get_admin_page_title(), 'arcads-dfp-acm-provider' ); ?></h1>
 
 			<?php
 			$tabs = $this->tabs;
@@ -89,13 +88,13 @@ class ArcAds_DFP_ACM_Provider_Admin {
 
 			switch ( $tab ) {
 				case 'arcads_dfp_acm_settings':
-					require_once( plugin_dir_path( $this->file ) . '/templates/admin/settings.php' );
+					require_once plugin_dir_path( $this->file ) . '/templates/admin/settings.php';
 					break;
 				case 'embed_ads_settings':
-					require_once( plugin_dir_path( $this->file ) . '/templates/admin/settings.php' );
+					require_once plugin_dir_path( $this->file ) . '/templates/admin/settings.php';
 					break;
 				default:
-					require_once( plugin_dir_path( $this->file ) . '/templates/admin/settings.php' );
+					require_once plugin_dir_path( $this->file ) . '/templates/admin/settings.php';
 					break;
 			} // End switch().
 			?>
@@ -104,10 +103,11 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Render tabs for settings pages in admin
-	* @param array $tabs
-	* @param string $tab
-	*/
+	 * Render tabs for settings pages in admin
+	 *
+	 * @param array  $tabs
+	 * @param string $tab
+	 */
 	private function render_tabs( $tabs, $tab = '' ) {
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
@@ -116,12 +116,13 @@ class ArcAds_DFP_ACM_Provider_Admin {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
-			echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+			echo sprintf(
+				'<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
 				esc_attr( $active ),
 				esc_url( '?page=' . $this->slug . '&tab=' . $tab_key ),
 				esc_html( $tab_caption )
 			);
-			//}
+			// }
 		}
 		echo '</h2>';
 
@@ -133,10 +134,10 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Register items for the settings api
-	* @return void
-	*
-	*/
+	 * Register items for the settings api
+	 *
+	 * @return void
+	 */
 	public function admin_settings_form() {
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
@@ -165,9 +166,9 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Check if the current user can edit Posts or Pages, and is using the Visual Editor
-	* If so, add some filters so we can register our plugin
-	*/
+	 * Check if the current user can edit Posts or Pages, and is using the Visual Editor
+	 * If so, add some filters so we can register our plugin
+	 */
 	public function setup_tinymce_plugin() {
 
 		// Check if the logged in WordPress User can edit Posts or Pages
@@ -188,23 +189,23 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Adds a TinyMCE plugin compatible JS file to the TinyMCE / Visual Editor instance
-	*
-	* @param array $plugin_array Array of registered TinyMCE Plugins
-	* @return array Modified array of registered TinyMCE Plugins
-	*/
+	 * Adds a TinyMCE plugin compatible JS file to the TinyMCE / Visual Editor instance
+	 *
+	 * @param array $plugin_array Array of registered TinyMCE Plugins
+	 * @return array Modified array of registered TinyMCE Plugins
+	 */
 	public function add_tinymce_plugin( $plugin_array ) {
 		$plugin_array['cms_ad'] = plugin_dir_url( $this->file ) . '/assets/js/tinymce-cms-ad.min.js?v=' . $this->version;
 		return $plugin_array;
 	}
 
 	/**
-	* Adds a button to the TinyMCE / Visual Editor which the user can click
-	* to insert a link with a custom CSS class.
-	*
-	* @param array $buttons Array of registered TinyMCE Buttons
-	* @return array Modified array of registered TinyMCE Buttons
-	*/
+	 * Adds a button to the TinyMCE / Visual Editor which the user can click
+	 * to insert a link with a custom CSS class.
+	 *
+	 * @param array $buttons Array of registered TinyMCE Buttons
+	 * @return array Modified array of registered TinyMCE Buttons
+	 */
 	public function add_tinymce_toolbar_button( $buttons ) {
 		array_push( $buttons, '|', 'cms_ad' );
 		return $buttons;
@@ -212,13 +213,13 @@ class ArcAds_DFP_ACM_Provider_Admin {
 
 
 	/**
-	* Fields for the ArcAds DFP Settings tab
-	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-	*
-	* @param string $page
-	* @param string $section
-	* @param string $input_callback
-	*/
+	 * Fields for the ArcAds DFP Settings tab
+	 * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	 *
+	 * @param string $page
+	 * @param string $section
+	 * @param string $input_callback
+	 */
 	private function arcads_dfp_acm_settings( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
@@ -358,13 +359,13 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Fields for the Embed Ads Settings tab
-	* This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-	*
-	* @param string $page
-	* @param string $section
-	* @param string $input_callback
-	*/
+	 * Fields for the Embed Ads Settings tab
+	 * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+	 *
+	 * @param string $page
+	 * @param string $section
+	 * @param string $input_callback
+	 */
 	private function embed_ads_settings( $page, $section, $callbacks ) {
 		$tabs = $this->tabs;
 		foreach ( $tabs as $key => $value ) {
@@ -477,7 +478,7 @@ class ArcAds_DFP_ACM_Provider_Admin {
 							'default' => 'on',
 						),
 					),
-					'border_around_embed_ads'          => array(
+					'border_around_embed_ads'           => array(
 						'title'    => __( 'Top and bottom border on embed ads', 'arcads-dfp-acm-provider' ),
 						'callback' => $callbacks['text'],
 						'page'     => $page,
@@ -637,10 +638,10 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Get list of possible embed tags
-	*
-	* @return array $items
-	*/
+	 * Get list of possible embed tags
+	 *
+	 * @return array $items
+	 */
 	private function embed_tag_options() {
 		$items        = array();
 		$list         = explode( ', ', get_option( $this->option_prefix . 'tag_list', '' ) );
@@ -664,10 +665,10 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Get list of post types
-	*
-	* @return array $items
-	*/
+	 * Get list of post types
+	 *
+	 * @return array $items
+	 */
 	private function post_type_options() {
 		$types = get_post_types();
 		$items = array();
@@ -685,12 +686,12 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Default display for <input> fields
-	*
-	* @param array $args
-	*/
+	 * Default display for <input> fields
+	 *
+	 * @param array $args
+	 */
 	public function display_input_field( $args ) {
-		//error_log('args is ' . print_r($args, true));
+		// error_log('args is ' . print_r($args, true));
 		$type    = $args['type'];
 		$id      = $args['label_for'];
 		$name    = $args['name'];
@@ -739,12 +740,12 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Default display for <textarea> fields
-	*
-	* @param array $args
-	*/
+	 * Default display for <textarea> fields
+	 *
+	 * @param array $args
+	 */
 	public function display_textarea( $args ) {
-		//error_log('args is ' . print_r($args, true));
+		// error_log('args is ' . print_r($args, true));
 		$id      = $args['label_for'];
 		$name    = $args['name'];
 		$desc    = $args['desc'];
@@ -780,11 +781,11 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Display for multiple checkboxes
-	* Above method can handle a single checkbox as it is
-	*
-	* @param array $args
-	*/
+	 * Display for multiple checkboxes
+	 * Above method can handle a single checkbox as it is
+	 *
+	 * @param array $args
+	 */
 	public function display_checkboxes( $args ) {
 		$type         = 'checkbox';
 		$name         = $args['name'];
@@ -829,10 +830,10 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Display for mulitple radio buttons
-	*
-	* @param array $args
-	*/
+	 * Display for mulitple radio buttons
+	 *
+	 * @param array $args
+	 */
 	public function display_radio( $args ) {
 		$type = 'radio';
 
@@ -887,10 +888,10 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Display for a dropdown
-	*
-	* @param array $args
-	*/
+	 * Display for a dropdown
+	 *
+	 * @param array $args
+	 */
 	public function display_select( $args ) {
 		$type = $args['type'];
 		$id   = $args['label_for'];
@@ -938,29 +939,32 @@ class ArcAds_DFP_ACM_Provider_Admin {
 	}
 
 	/**
-	* Default display for <a href> links
-	*
-	* @param array $args
-	*/
+	 * Default display for <a href> links
+	 *
+	 * @param array $args
+	 */
 	public function display_link( $args ) {
 		$label = $args['label'];
 		$desc  = $args['desc'];
 		$url   = $args['url'];
 		if ( isset( $args['link_class'] ) ) {
-			echo sprintf( '<p><a class="%1$s" href="%2$s">%3$s</a></p>',
+			echo sprintf(
+				'<p><a class="%1$s" href="%2$s">%3$s</a></p>',
 				esc_attr( $args['link_class'] ),
 				esc_url( $url ),
 				esc_html( $label )
 			);
 		} else {
-			echo sprintf( '<p><a href="%1$s">%2$s</a></p>',
+			echo sprintf(
+				'<p><a href="%1$s">%2$s</a></p>',
 				esc_url( $url ),
 				esc_html( $label )
 			);
 		}
 
 		if ( '' !== $desc ) {
-			echo sprintf( '<p class="description">%1$s</p>',
+			echo sprintf(
+				'<p class="description">%1$s</p>',
 				esc_html( $desc )
 			);
 		}

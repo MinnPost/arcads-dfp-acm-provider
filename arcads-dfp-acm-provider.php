@@ -37,7 +37,7 @@ define( 'ARCADS_DFP_ACM_PROVIDER_FILE', __FILE__ );
 define( 'ARCADS_DFP_ACM_PROVIDER_VERSION', '0.0.11' );
 
 // Load the autoloader.
-require_once( 'lib/autoloader.php' );
+require_once 'lib/autoloader.php';
 
 /**
  * Retrieve the instance of the main plugin class

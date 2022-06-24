@@ -1,11 +1,11 @@
 <?php
 /**
  * Automatically loads the specified file.
- *
  */
 
 /**
  * Enable autoloading of plugin classes
+ *
  * @param $class_name
  */
 spl_autoload_register(
@@ -24,7 +24,7 @@ spl_autoload_register(
 
 		// If a file is found, load it
 		if ( file_exists( $file ) ) {
-			require_once( $file );
+			require_once $file;
 		}
 
 	}

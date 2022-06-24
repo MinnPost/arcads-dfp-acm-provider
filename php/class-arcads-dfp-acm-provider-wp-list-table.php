@@ -14,8 +14,8 @@ class ArcAds_DFP_ACM_Provider_WP_List_Table extends ACM_WP_List_Table {
 	public function __construct() {
 		parent::__construct(
 			array(
-				'singular' => 'arcads_dfp_acm_wp_list_table', //Singular label
-				'plural'   => 'arcads_dfp_acm_wp_list_table', //plural label, also this well be one of the table css class
+				'singular' => 'arcads_dfp_acm_wp_list_table', // Singular label
+				'plural'   => 'arcads_dfp_acm_wp_list_table', // plural label, also this well be one of the table css class
 				'ajax'     => true,
 			)
 		);
@@ -104,25 +104,26 @@ class ArcAds_DFP_ACM_Provider_WP_List_Table extends ACM_WP_List_Table {
 			return;
 		}
 
-		/* -- Pagination parameters -- */
-		//Number of elements in your table?
-		$totalitems = count( $this->items ); //return the total number of affected rows
+		/*
+		 -- Pagination parameters -- */
+		// Number of elements in your table?
+		$totalitems = count( $this->items ); // return the total number of affected rows
 
-		//How many to display per page?
+		// How many to display per page?
 		$perpage = apply_filters( 'acm_list_table_per_page', 50 );
 
-		//Which page is this?
+		// Which page is this?
 		$paged = ! empty( $_GET['paged'] ) ? intval( $_GET['paged'] ) : '';
 
-		//Page Number
+		// Page Number
 		if ( empty( $paged ) || ! is_numeric( $paged ) || $paged <= 0 ) {
 			$paged = 1;
 		}
-		//How many pages do we have in total?
+		// How many pages do we have in total?
 
 		$totalpages = ceil( $totalitems / $perpage );
 
-		//adjust the query to take pagination into account
+		// adjust the query to take pagination into account
 
 		if ( ! empty( $paged ) && ! empty( $perpage ) ) {
 			$offset = ( $paged - 1 ) * $perpage;
@@ -136,7 +137,7 @@ class ArcAds_DFP_ACM_Provider_WP_List_Table extends ACM_WP_List_Table {
 				'per_page'    => $perpage,
 			)
 		);
-		//The pagination links are automatically built according to those parameters
+		// The pagination links are automatically built according to those parameters
 
 		/* -- Register the Columns -- */
 		$columns               = $this->get_columns();

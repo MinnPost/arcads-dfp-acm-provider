@@ -15,8 +15,8 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	public $ad_code_manager;
 
 	/**
-	* Constructor which sets up front end rendering
-	*/
+	 * Constructor which sets up front end rendering
+	 */
 	public function __construct() {
 
 		$this->version       = arcads_dfp_acm_provider()->version;
@@ -51,7 +51,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		add_filter( 'acm_output_tokens', array( $this, 'acm_output_tokens' ), 15, 3 );
 		add_filter( 'acm_output_html', array( $this, 'filter_output_html' ), 10, 2 );
 		add_filter( 'acm_display_ad_codes_without_conditionals', array( $this, 'check_conditionals' ) );
-		//add_filter( 'acm_whitelisted_conditionals', array( $this, 'allowed_conditionals' ) );
+		// add_filter( 'acm_whitelisted_conditionals', array( $this, 'allowed_conditionals' ) );
 		add_filter( 'acm_conditional_args', array( $this, 'conditional_args' ), 10, 2 );
 
 		// disperse shortcodes in the editor if the settings say to
@@ -85,19 +85,20 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		global $dfp_dcopt;
 		global $wp_query;
 
-		//error_log( 'tile is ' . $dfp_tile . ' and ord is ' . $dfp_ord . ' and pos is ' . $dfp_pos . ' and dcopt is ' . $dfp_dcopt . ' and wp query is ' . print_r( $wp_query, true ) );
+		// error_log( 'tile is ' . $dfp_tile . ' and ord is ' . $dfp_ord . ' and pos is ' . $dfp_pos . ' and dcopt is ' . $dfp_dcopt . ' and wp query is ' . print_r( $wp_query, true ) );
 
-		//if ( false === $dfp_pos[ $code_to_display['url_vars']['sz'] ] ) {
+		// if ( false === $dfp_pos[ $code_to_display['url_vars']['sz'] ] ) {
 		if ( isset( $code_to_display['url_vars']['pos'] ) ) {
 			$output_tokens['%pos%'] = $code_to_display['url_vars']['pos'];
 		}
-		//$output_tokens['%test%'] = isset( $_GET['test'] ) && $_GET['test'] == 'on' ? 'on' : '';
+		// $output_tokens['%test%'] = isset( $_GET['test'] ) && $_GET['test'] == 'on' ? 'on' : '';
 
 		return $output_tokens;
 	}
 
 	/**
 	 * Filter the output HTML for each ad tag to produce the code we need
+	 *
 	 * @param string $output_html
 	 * @param string $tag_id
 	 *
@@ -123,7 +124,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * Whether to show ads that don't have any conditionals
 	 *
 	 * @return bool
-	 *
 	 */
 	public function check_conditionals() {
 		$show_without_conditionals = filter_var( get_option( $this->option_prefix . 'show_ads_without_conditionals', false ), FILTER_VALIDATE_BOOLEAN );
@@ -136,9 +136,9 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 *
 	 * @param array $conditionals
 	 * @return array $conditionals
-	 *
 	 */
-	/*public function allowed_conditionals( $conditionals ) {
+	/*
+	public function allowed_conditionals( $conditionals ) {
 		$conditionals[] = 'is_singular';
 		return $conditionals;
 	}*/
@@ -146,10 +146,9 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	/**
 	 * Additional arguments for conditionals
 	 *
-	 * @param array $args
+	 * @param array  $args
 	 * @param string $function
 	 * @return array $args
-	 *
 	 */
 	public function conditional_args( $args, $function ) {
 		global $wp_query;
@@ -161,7 +160,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 				$args[] = $wp_query->queried_object->ID;
 			}
 			// as far as I can tell, we don't actually need this. It causes errors in PHP 8.
-			//$args['is_singular'] = true;
+			// $args['is_singular'] = true;
 		}
 		return $args;
 	}
@@ -170,8 +169,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * Make [cms_ad] a recognized shortcode
 	 *
 	 * @param array $atts
-	 *
-	 *
 	 */
 	public function render_shortcode( $atts ) {
 		return;
@@ -184,7 +181,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 *
 	 * @return $content
 	 * return the post content with code for ads inside it at the proper places
-	 *
 	 */
 	public function insert_and_render_inline_ads( $content = '' ) {
 		if ( is_feed() ) {
@@ -256,11 +252,10 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * Place the ad code, or cms shortcode for the ad, into the post body as many times, and in the right location.
 	 *
 	 * @param string $content
-	 * @param bool $in_editor
+	 * @param bool   $in_editor
 	 *
 	 * @return $content
 	 * return the post content with shortcodes for ads inside it at the proper places
-	 *
 	 */
 	private function insert_ads_into_content( $content, $in_editor = false ) {
 		$multiple_embeds = get_option( $this->option_prefix . 'multiple_embeds', '0' );
@@ -380,7 +375,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 *
 	 * @return $output
 	 * return the necessary ad code for the specified tag type
-	 *
 	 */
 	public function get_code_to_insert( $tag_id, $class = '' ) {
 		$output_script = ''; // this could be empty
@@ -572,7 +566,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * @param string $tag_id        The ad tag id
 	 *
 	 * @return $arcads_prerender    The prerender method for arcads
-	 *
 	 */
 	private function lazy_loaded_or_not( $tag_id ) {
 		// are we lazy loading or not
@@ -632,9 +625,8 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	}
 
 	/**
-	* Enqueue JavaScript and CSS for front end
-	*
-	*/
+	 * Enqueue JavaScript and CSS for front end
+	 */
 	public function add_scripts_and_styles() {
 
 		$arcads_dependencies = array();
@@ -699,7 +691,6 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 *
 	 * @param string $shortcode
 	 * @return string $regex
-	 *
 	 */
 	private function get_single_shortcode_regex( $shortcode ) {
 		// The  $shortcode_tags global variable contains all registered shortcodes.
@@ -728,11 +719,10 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 * Insert one or more inline ads into the post editor, depending on the settings. Editors can then rearrange them as desired.
 	 *
 	 * @param string $content
-	 * @param int $post_id
+	 * @param int    $post_id
 	 *
 	 * @return $content
 	 * return the post content into the editor with shortcodes for ads inside it at the proper places
-	 *
 	 */
 	public function insert_inline_ad_in_editor( $content, $post_id ) {
 
@@ -764,12 +754,11 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 *
 	 * @param string $content
 	 * @param string $post_type
-	 * @param int $post_id
-	 * @param bool $in_editor
+	 * @param int    $post_id
+	 * @param bool   $in_editor
 	 *
 	 * @return bool
 	 * return true to skip rendering ads, false otherwise
-	 *
 	 */
 	private function should_we_skip_ads( $content, $post_type, $post_id, $in_editor ) {
 
@@ -845,12 +834,11 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 	 *
 	 * @param string $content
 	 * @param string $post_type
-	 * @param int $post_id
-	 * @param bool $in_editor
+	 * @param int    $post_id
+	 * @param bool   $in_editor
 	 *
 	 * @return bool
 	 * return true to skip rendering ads, false otherwise
-	 *
 	 */
 	public function parse_ad_tag_sizes( $url_vars ) {
 		if ( empty( $url_vars ) ) {

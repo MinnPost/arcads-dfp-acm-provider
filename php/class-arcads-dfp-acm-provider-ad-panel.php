@@ -15,8 +15,8 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 	public $ad_code_manager;
 
 	/**
-	* Constructor which sets up ad panel
-	*/
+	 * Constructor which sets up ad panel
+	 */
 	public function __construct() {
 
 		$this->version       = arcads_dfp_acm_provider()->version;
@@ -38,13 +38,13 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 	}
 
 	/**
-	* Tag IDs
-	*
-	* @param int $adcount
-	* @return int $adcount
-	*
-	*/
-	/*public function ad_tag_ids( $ids = array() ) {
+	 * Tag IDs
+	 *
+	 * @param int $adcount
+	 * @return int $adcount
+	 */
+	/*
+	public function ad_tag_ids( $ids = array() ) {
 		$ids = array(
 			array(
 				'tag'               => 'leaderboard',
@@ -124,6 +124,7 @@ class ArcAds_DFP_ACM_Provider_Ad_Panel {
 
 	/**
 	 * Register the tag ids based on the admin settings
+	 *
 	 * @param array $ids
 	 * @return array $ad_tag_ids
 	 */

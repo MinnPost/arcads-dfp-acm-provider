@@ -20,24 +20,28 @@ class ArcAds_DFP_ACM_Provider_Loader {
 
 	/**
 	 * Filesystem path to the main plugin file
+	 *
 	 * @var string
 	 */
 	public $file;
 
 	/**
 	 * Prefix for plugin options
+	 *
 	 * @var string
 	 */
 	public $option_prefix;
 
 	/**
 	 * Plugin slug
+	 *
 	 * @var string
 	 */
 	public $slug;
 
 	/**
 	 * User capability required
+	 *
 	 * @var string
 	 */
 	public $capability;
@@ -64,7 +68,7 @@ class ArcAds_DFP_ACM_Provider_Loader {
 
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 
-		//register_activation_hook( __FILE__, array( $this, 'activate' ) );
+		// register_activation_hook( __FILE__, array( $this, 'activate' ) );
 
 		// methods for deactivating the plugin
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
@@ -72,11 +76,11 @@ class ArcAds_DFP_ACM_Provider_Loader {
 	}
 
 	/**
-	* Register this provider with ACM
-	*
-	* @param array $providers
-	* @return array $providers
-	*/
+	 * Register this provider with ACM
+	 *
+	 * @param array $providers
+	 * @return array $providers
+	 */
 	public function acm_register_arcads_dfp_slug( $providers ) {
 		$providers->arcads_dfp = array(
 			'provider' => 'ArcAds_DFP_ACM_Provider_Extension',
@@ -86,13 +90,13 @@ class ArcAds_DFP_ACM_Provider_Loader {
 	}
 
 	/**
-	* Display a Settings link on the main Plugins page
-	*
-	* @param array $links
-	* @param string $file
-	* @return array $links
-	* These are the links that go with this plugin's entry
-	*/
+	 * Display a Settings link on the main Plugins page
+	 *
+	 * @param array  $links
+	 * @param string $file
+	 * @return array $links
+	 * These are the links that go with this plugin's entry
+	 */
 	public function plugin_action_links( $links, $file ) {
 		if ( plugin_basename( $this->file ) === $file ) {
 			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=' . $this->slug . '">' . __( 'Settings', 'arcads-dfp-acm-provider' ) . '</a>';
@@ -134,7 +138,6 @@ class ArcAds_DFP_ACM_Provider_Loader {
 
 	/**
 	 * Load up the localization file if we're using WordPress in a different language.
-	 *
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'arcads-dfp-acm-provider', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -142,7 +145,6 @@ class ArcAds_DFP_ACM_Provider_Loader {
 
 	/**
 	 * Sanitize a string of HTML classes
-	 *
 	 */
 	public function sanitize_html_classes( $classes, $sep = ' ' ) {
 		$return = '';
