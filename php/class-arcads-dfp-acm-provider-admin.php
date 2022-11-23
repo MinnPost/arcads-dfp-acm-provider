@@ -240,6 +240,27 @@ class ArcAds_DFP_ACM_Provider_Admin {
 					'desc' => __( 'Enter the DFP Id from Google.', 'arcads-dfp-acm-provider' ),
 				),
 			),
+			'adsense_id'                    => array(
+				'title'    => __( 'Ads by Google ID', 'arcads-dfp-acm-provider' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type' => 'text',
+					'desc' => __( 'Enter the Ads by Google Id from the Google account.', 'arcads-dfp-acm-provider' ),
+				),
+			),
+			'use_adsense_code'              => array(
+				'title'    => __( 'Include code for Ads by Google', 'arcads-dfp-acm-provider' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'    => 'checkbox',
+					'desc'    => __( 'If checked, AND if there is a value for the ID above, the Ads by Google library will be added to every page with ads.', 'arcads-dfp-acm-provider' ),
+					'default' => '0',
+				),
+			),
 			'tag_list'                      => array(
 				'title'    => __( 'List tags', 'arcads-dfp-acm-provider' ),
 				'callback' => $callbacks['textarea'],

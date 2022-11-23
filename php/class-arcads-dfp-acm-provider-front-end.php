@@ -39,7 +39,8 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		$this->lazy_load_all    = filter_var( get_option( $this->option_prefix . 'lazy_load_ads', false ), FILTER_VALIDATE_BOOLEAN );
 		$this->lazy_load_embeds = filter_var( get_option( $this->option_prefix . 'lazy_load_embeds', false ), FILTER_VALIDATE_BOOLEAN );
 
-		$this->dfp_id = filter_var( get_option( $this->option_prefix . 'dfp_id', '1035012' ), FILTER_SANITIZE_STRING );
+		$this->dfp_id     = filter_var( get_option( $this->option_prefix . 'dfp_id', '1035012' ), FILTER_SANITIZE_STRING );
+		$this->adsense_id = filter_var( get_option( $this->option_prefix . 'adsense_id', '' ), FILTER_SANITIZE_STRING );
 
 		$this->collapse_empty_divs = filter_var( get_option( $this->option_prefix . 'collapse_empty_divs', false ), FILTER_VALIDATE_BOOLEAN );
 
@@ -67,6 +68,7 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 
 		// add javascript
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
+		add_filter( 'script_loader_tag', array( $this, 'modify_script_loader_tag' ), 10, 3 );
 
 		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
 	}
@@ -632,6 +634,11 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		$arcads_dependencies = array();
 		$css_dependencies    = array();
 
+		// optionally include the Ads by Google script
+		if ( '' !== $this->adsense_id && true === filter_var( get_option( $this->option_prefix . 'use_adsense_code', false ), FILTER_VALIDATE_BOOLEAN ) ) {
+			wp_enqueue_script( 'adsense', 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', array(), $this->version, false );
+		}
+
 		// put the polyfill for intersectionobserver here
 		if ( true === filter_var( get_option( $this->option_prefix . 'use_intersectionobserver_polyfill', false ), FILTER_VALIDATE_BOOLEAN ) ) {
 			wp_enqueue_script( 'intersectionobserverpolyfill', plugins_url( 'assets/js/intersection-observer.min.js', $this->file ), array(), $this->version, true );
@@ -684,6 +691,24 @@ class ArcAds_DFP_ACM_Provider_Front_End {
 		}
 
 		wp_enqueue_style( $this->slug . '-front-end', plugins_url( 'assets/css/' . $this->slug . '-front-end.min.css', $this->file ), $css_dependencies, $this->version, 'all' );
+	}
+
+	/**
+	 * Modify script tags for enqueued scripts
+	 *
+	 * @param string $tag the tag for the script.
+	 * @param string $handle the named handle of the enqueued script.
+	 * @param string $src the script's source URL.
+	 * @return string $tag
+	 */
+	public function modify_script_loader_tag( $tag, $handle, $src ) {
+		if ( 'adsense' === $handle ) { 
+			if ( false === stripos( $tag, 'async' ) ) {
+				$tag = str_replace( ' src', ' async src', $tag );
+			}
+			$tag = str_replace( ' src', ' data-ad-client="' . $this->adsense_id . '" src', $tag );
+		}
+		return $tag;
 	}
 
 	/**
