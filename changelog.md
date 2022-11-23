@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 0.0.12 (2022-11-23)
+    * Optionally add the Ads by Google JavaScript to the enqueued scripts.
+
 * 0.0.11 (2022-06-06)
     * Better versioning of CSS and JavaScript files.
 
